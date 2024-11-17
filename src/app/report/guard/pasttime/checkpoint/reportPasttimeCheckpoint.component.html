@@ -1,0 +1,74 @@
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">รายงานผลปฏิบัติงาน รปภ. (พาร์ทไทม์)</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">รายงานผลปฏิบัติงาน รปภ. (พาร์ทไทม์)</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-7 align-self-center">
+             
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            รายงานผลปฏิบัติงาน รปภ. (พาร์ทไทม์)
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex no-block justify-content-end align-items-center">
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="exportForm" id="export-form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group m-b-30">
+                                    <label for="stock-category">วันที่ทำงาน</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" name="daterangeInput" 
+                                        formControlName="checkpoin_date" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)">
+                                        <span class="input-group-addon input-group-text"><i class="icon-calender"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="form-group m-b-30">
+                                    <label for="customer_id">ประเภทเอกสาร</label>
+                                    <select class="form-control" formControlName="report_type" 
+                                    [ngClass]="{ 'is-invalid': submitted_export &amp;&amp; exportForm.controls.report_type.errors }">
+                                        <option value="">--- กรุณาเลือก ---</option>
+                                        <option value="1">รายงานผลตอบแทน/ค่าจ้าง</option>
+                                        <option value="2">รายงานผู้ที่ไม่ได้ลงปฏิบัติงาน</option>
+                                    </select>
+                                    <div *ngIf="submitted_export &amp;&amp; exportForm.controls.report_type.errors" class="text-danger">
+                                        <div *ngIf="exportForm.controls.report_type.errors.required">โปรดระบุประเภทเอกสาร</div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-sm-12 col-md-2">
+                                <div class="form-group m-b-30">
+                                    <button type="button" class="btn btn-rounded btn-info" style="margin-top: 10%;" (click)="exportDocument(exportForm.value)"><i class="fas fa-file-pdf"></i> Export</button>
+                                </div>
+                            </div> 
+                        </div>
+                    </form>
+                    <hr />  
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>  

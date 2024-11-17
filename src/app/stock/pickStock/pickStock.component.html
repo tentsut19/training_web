@@ -1,0 +1,318 @@
+<div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">ข้อมูลรายการเบิก</h4>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">ข้อมูลรายการเบิก</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex no-block justify-content-end align-items-center">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-9">
+                                ค้นหาข้อมูลรายการเบิก
+                            </div>
+                             
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <label for="stock-category">วันที่เบิก</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="holiday-date"
+                                daterangepicker [options]="options" (selected)="selectedDate($event, daterange)">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label for="stock-category">ข้อมูล</label>
+                                <div class="form-group">
+                                    <input type="text" [(ngModel)]="input" class="form-control" placeholder="ชื่อพนักงาน/รหัสพนักงาน ที่ต้องการค้นหา...">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-2">
+                                <button type="button" class="btn btn-rounded btn-info" style="margin-top: 13%;" (click)="search()">
+                                    <i class="fa fa-search"></i> ค้นหา</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-9">
+                                ข้อมูลรายการเบิก
+                            </div>
+                            <div class="col-3">
+                                <div class="d-flex no-block justify-content-end align-items-center">
+                                    <button type="button" class="btn btn-rounded btn-success" data-toggle="modal" data-target="#modal-holiday-add"><i
+                                            class="fa fa-plus"></i> เพิ่มข้อมูลการเบิก</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="pick_stock_table" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%;" class="center">ลำดับ</th>
+                                        <th style="width: 10%;">วันที่เบิก</th>
+                                        <th style="width: 20%;">อุปกรณ์</th>
+                                        <th style="width: 10%;">ผู้เบิก</th>
+                                        <th style="width: 15%;">ผู้จ่าย</th>
+                                        <th style="width: 10%;">งวดที่แบ่งจ่าย</th>
+                                        <th style="width: 10%;">จำนวนเงินต่องวด</th>
+                                        <th style="width: 10%;">เริ่มจ่าย</th>
+                                        <th style="width: 5%;">จ่ายแล้ว (งวด)</th>
+                                        <th style="width: 5%;" class="center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    <tr *ngFor="let item of pickStockList; index as i">
+                                        <td style="width: 5%;" class="center">{{i+1}}</td>
+                                        <td style="width: 10%;">
+                                            <span>10 มิถุนายน 2565</span>
+                                        </td>
+                                        <td style="width: 20%;">
+                                            <span>1. ชุดปฏิบัติงาน (500 บาท)</span><br />
+                                            <span>2. มือถือ (1,500 บาท)</span><br />
+                                            <span style="background: #a7e1ff;border-radius: 5px;margin: 2px;padding: 2px;"><b>รวม : </b>{{item.pick_total_amount | number}} บาท</span>
+                                        </td>
+                                        <td style="width: 12%;">
+                                            <span>{{item.first_name}} &nbsp; {{item.last_name}}</span>
+                                        </td>
+                                        <td style="width: 13%;">
+                                            <span>{{item.createFname}} &nbsp; {{item.createLastName}}</span>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <span>{{item.total_installment}}</span>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <span>{{item.paid_per_installment}}</span>
+                                        </td>
+                                        <td>
+                                            <span>รอบ 1-15 กรกฎาคม 2565</span>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <span>{{item.paid_installment}} / {{item.total_installment}}</span>
+                                        </td>
+                                        <td class="center">
+                                            <a href="/#/setting/rent-house/manage/0" target="_blank"><i class="fas fa-search btn-view"></i></a>&nbsp;
+                                            <i class="fas fa-trash-alt btn-remove" (click)="delete(item.id)"></i>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!--Add modal-->
+    <div class="modal" id="modal-holiday-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-add">
+                        <h4 class="modal-title" id="exampleModalLabel1">เพิ่มข้อมูลการเบิก</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <!--<form [formGroup]="addForm"> -->
+                            <div class="form-group">
+                                <label for="pickDate" class="control-label">วันที่ <span class="star-required">*</span></label>
+                                <input type="text" class="form-control" id="pickDate"
+                                daterangepicker [options]="options2" (selected)="selectedDate($event, daterange)">
+                            </div>
+                            <div class="form-group m-b-30">
+                                <label for="employeeId">ผู้เบิก <span class="star-required">*</span></label>
+                                <select class="form-control" id="employeeId" [(ngModel)]="employeeId">
+                                    <option value="0">--- กรุณาเลือก ---</option>
+                                    <option *ngFor="let item of employeeList; index as i" value="{{item.id}}">{{item.first_name}} {{item.last_name}}</option>
+                                </select>
+                            </div> 
+                            <br />
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="productId">อุปกรณ์ <span class="star-required">*</span></label>
+                                    <select class="form-control" [(ngModel)]="productId">
+                                        <option value="0">--- กรุณาเลือก ---</option>
+                                        <option *ngFor="let item of productList; index as i" value="{{item.id}}">{{item.name}}</option>
+                                    </select>
+                                </div> 
+                                <div class="col-2">
+                                    <label for="productQuantity">จำนวน <span class="star-required">*</span></label>
+                                    <input type="number" class="form-control" id="productQuantity"
+                                    [(ngModel)]="productQuantity"
+                                    style="background-color: rgb(225 250 255);">
+                                </div> 
+                                <div class="col-2">
+                                    <br />
+                                    <button type="button" class="btn btn-rounded btn-info" (click)="addPickItem()">
+                                    <i class="fa fa-plus"></i> เพิ่ม</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-striped table-bordered" style="margin-top: 10px">
+                                        <thead style="background: #75cbdc">
+                                            <tr>
+                                                <th style="width: 5%;" class="center">ลำดับ</th>
+                                                <th style="width: 20%;">อุปกรณ์</th>
+                                                <th style="width: 10%;">ราคาต่อหน่วย</th>
+                                                <th style="width: 10%;">จำนวน</th>
+                                                <th style="width: 10%;">ราคารวม</th>
+                                                <th style="width: 5%;" class="center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of pickItemList; index as i">
+                                                <td>{{i+1}}</td>
+                                                <td>{{item.productName}}</td>
+                                                <td>{{item.price}}</td>
+                                                <td>
+                                                    <input type="number" class="form-control" 
+                                                    [(ngModel)]="item.quantity" (keyup)="quantityChanged(item.productId,$event.target.value)"
+                                                    (change)="quantityChanged(item.productId,$event.target.value)">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" [(ngModel)]="item.totalPrice" disabled>
+                                                </td>
+                                                <td>
+                                                    <i class="fas fa-trash-alt btn-remove" (click)="removePickItem(i)"></i>
+                                                </td>
+                                            </tr> 
+                                            <tr>
+                                                <td colspan="5" style="text-align: right;">
+                                                    <span style="font-weight: bold">ราคารวม</span>
+                                                </td>
+                                                <td colspan="5">
+                                                    {{totalAmontPickItem | number}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group m-b-30">
+                                <label for="totalInstallment">จำนวนงวดที่แบ่งจ่าย <span class="star-required">*</span></label>
+                                <input type="text" class="form-control" id="totalInstallment" [(ngModel)]="totalInstallment">
+                            </div> 
+                            <!--<div class="form-group m-b-30">
+                                <label for="holiday_name">เริ่มจ่าย <span class="star-required">*</span></label>
+                                <select class="form-control">
+                                    <option value="">--- กรุณาเลือก ---</option>
+                                    <option value="0">1-15 กรกฎาคม 2565</option>
+                                    <option value="1">16-31 กรกฎาคม 2565</option>
+                                    <option value="2">1-15 สิงหาคม 2565</option>
+                                    <option value="3">1-31 สิงหาคม 2565</option>
+                                </select>
+                            </div> -->
+                        <!--</form>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-rounded btn-success" (click)="savePickStock()">บันทึก</button>
+                        <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Add modal-->
+    
+        <!--Edit modal-->
+    <div class="modal" id="modal-holiday-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-edit">
+                            <h4 class="modal-title" id="exampleModalLabel1">แก้ไขข้อมูลปฏิทินวันหยุด</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <form [formGroup]="editForm">
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="id" formControlName="id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="holiday-date" class="control-label">วันที่ <span class="star-required">*</span></label>
+                                    <input type="text" class="form-control" id="holiday-date" formControlName="holiday_date" 
+                                    daterangepicker [options]="options" (selected)="selectedDate($event, daterange)"
+                                    [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.holiday_date.errors }">
+                                    <div *ngIf="submitted_edit &amp;&amp; editForm.controls.holiday_date.errors" class="text-danger">
+                                        <div *ngIf="editForm.controls.holiday_date.errors.required">โปรดระบุวันที่</div>
+                                    </div>
+                                </div>
+                                <div class="form-group m-b-30">
+                                    <label for="holiday_name">รายละเอียดวันหยุด <span class="star-required">*</span></label>
+                                    <input type="text" class="form-control" id="holiday_name" formControlName="holiday_name"
+                                    [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.holiday_name.errors }">
+                                    <div *ngIf="submitted_edit &amp;&amp; editForm.controls.holiday_name.errors" class="text-danger">
+                                        <div *ngIf="editForm.controls.holiday_name.errors.required">โปรดระบุรายละเอียดวันหยุด</div>
+                                    </div>
+                                </div> 
+                                <div class="form-group m-b-30">
+                                    <label for="paid_peroid">รอบการจ่ายเงิน <span class="star-required">*</span></label>
+                                        <select class="form-control" formControlName="paid_peroid" 
+                                        [ngClass]="{ 'is-invalid': submitted_edit &amp;&amp; editForm.controls.paid_peroid.errors }">
+                                            <option value="">--- กรุณาเลือก ---</option>
+                                            <option value="0">จ่ายในรอบ</option>
+                                            <option value="1">1 รอบบิล</option>
+                                            <option value="2">2 รอบบิล</option>
+                                            <option value="3">3 รอบบิล</option>
+                                        </select>
+                                        <div *ngIf="submitted_edit &amp;&amp; editForm.controls.paid_peroid.errors" class="text-danger">
+                                            <div *ngIf="editForm.controls.paid_peroid.errors.required">โปรดระบุรอบบิล</div>
+                                        </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-rounded btn-success" (click)="updateCalendarHoliday(editForm.value)">บันทึก</button>
+                            <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <!-- End Edit modal-->
+    
+    
+        <div class="modal" id="modal-holiday-remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body center remove-modal-bg-content">
+                            <i class="fa fa-exclamation-circle warnnig-remove-icon" aria-hidden="true"></i><br />
+                            <span class="warnnig-remove-text">
+                                คุณต้องการลบข้อมูลปฏิทินวันหยุดรายการนี้
+                            </span>
+                        </div>
+                        <div class="modal-footer center">
+                                <button type="button" class="btn btn-rounded btn-danger" (click)="deleteProcess(currentCalendarHoliday)">ยืนยัน</button>&nbsp;
+                                <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit modal-->

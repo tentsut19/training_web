@@ -1,0 +1,337 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "timer" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">ข้อมูลบุคคลภายนอก</h4>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">ข้อมูลบุคคลภายนอก</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex no-block justify-content-end align-items-center">
+                    <button type="button" class="btn btn-rounded btn-success" (click)="openModal()"><i
+                            class="fa fa-plus"></i> เพิ่มบุคคลภายนอก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container-fluid"> 
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-9">
+                                รายการบุคคลภายนอก
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="outsider_table" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%;" class="center">ลำดับ</th>
+                                        <th style="width: 20%;">ชื่อ-นามสกุล</th>
+                                        <th style="width: 10%;">เลขบัตรประชาชน</th>
+                                        <th style="width: 10%;">เบอร์โทรศัพท์</th>
+                                        <th style="width: 10%;">เลขที่บัญชีธนาคาร</th>
+                                        <th style="width: 35%;">ที่อยู่</th>
+                                        <th style="width: 10%;" class="center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of outsiderList; index as i">
+                                        <td style="width: 5%;" class="center">{{i+1}}</td>
+                                        <td style="width: 20%;" class="left">{{item.prefix}}{{item.first_name}} {{item.last_name}}</td>
+                                        <td style="width: 10%;" class="left">{{item.identity_no}}</td>
+                                        <td style="width: 10%;" class="left">{{item.mobile}}</td>
+                                        <td style="width: 10%;" class="left">{{item.bank_account_no}}</td>
+                                        <td style="width: 35%;" class="left">{{item.address_detail}}</td>
+                                        <td style="width: 10%;" class="center">
+                                            <i class="fas fa-edit btn-edit" (click)="edit(item.id)"></i>&nbsp;
+                                            <i class="fas fa-trash-alt btn-remove" (click)="delete(item.id)"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Add modal-->
+    <div class="modal" id="modal-outsider-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-add">
+                        <h4 class="modal-title" id="exampleModalLabel1">เพิ่มบุคคลภายนอก</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="addForm">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>คำนำหน้าชื่อ </label>
+                                        <input type="text" formControlName="prefix" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>ชื่อ <span class="star-required">*</span></label>
+                                        <input type="text" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.first_name.errors }">
+                                        <div *ngIf="submitted_add && addForm.controls.first_name.errors" class="text-danger">
+                                            <div *ngIf="addForm.controls.first_name.errors.required">กรุณากรอกชื่อ</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>นามสกุล <span class="star-required">*</span></label>
+                                        <input type="text" formControlName="last_name" class="form-control" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.last_name.errors }">
+                                        <div *ngIf="submitted_add && addForm.controls.last_name.errors" class="text-danger">
+                                            <div *ngIf="addForm.controls.last_name.errors.required">กรุณากรอกนามสกุล</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <div class="form-group">
+                                        <label>เลขบัตรประชาชน <span class="star-required">*</span></label>
+                                        <input type="text" formControlName="identity_no" class="form-control" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.identity_no.errors }">
+                                        <div *ngIf="submitted_add && addForm.controls.identity_no.errors" class="text-danger">
+                                            <div *ngIf="addForm.controls.identity_no.errors.required">กรุณากรอกเลขบัตรประชาชน</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-8">
+                                    <div class="form-group">
+                                        <label>เลขที่บัญชีธนาคาร </label>
+                                        <input type="text" formControlName="bank_account_no" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>ประเภทการเจนหุ้นลอย </label>
+                                        <select formControlName="share_type" class="form-control">
+                                            <option value="" [selected]="true">ไม่ระบุ</option>
+                                            <option value="EP">บุคคลภายนอก</option>
+                                            <option value="IE">พนักงานภายใน</option>
+                                            <option value="SG">รปภ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>เบอร์โทรศัพท์ </label>
+                                        <input type="text" formControlName="mobile" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>ที่อยู่ </label>
+                                        <input type="text" formControlName="address_detail" class="form-control" placeholder="ที่อยู่ เช่น บ้านเลขที่ หมู่บ้าน หมู่ที่ ..." >
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>จังหวัด </label>
+                                        <select formControlName="provinceMain" class="form-control" (change)="getAmphur($event.target.value)" >
+                                            <option value="" [selected]="true">--- เลือกจังหวัด ---</option>
+                                            <option *ngFor="let province of countryJson; let count = index;" value="{{count}}|{{province[0]}}">{{province[0]}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>อำเภอ </label>
+                                        <select formControlName="amphurMain" class="form-control" (change)="getThumbon($event.target.value)" >
+                                            <option value="" [selected]="true">--- เลือกอำเภอ ---</option>
+                                            <option *ngFor="let amphur of amphurJson; let count = index;" value="{{count}}|{{amphur[0]}}">{{amphur[0]}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>ตำบล </label>
+                                        <select formControlName="thumbonMain" class="form-control" (change)="getPost($event.target.value)" >
+                                            <option value="" [selected]="true">--- เลือกตำบล ---</option>
+                                            <option *ngFor="let thumbon of thumbonJson; let count = index;" value="{{count}}|{{thumbon[0]}}">{{thumbon[0]}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>รหัสไปรษณีย์ </label>
+                                        <input type="text" formControlName="postcode" class="form-control" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-rounded btn-success" (click)="add(addForm.value)">บันทึก</button>
+                        <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Add modal-->
+    
+
+    <!--Edit modal-->
+    <div class="modal" id="modal-outsider-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-edit">
+                    <h4 class="modal-title" id="exampleModalLabel1">แก้ไขบุคคลภายนอก</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="editForm">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group">
+                                    <label>คำนำหน้าชื่อ </label>
+                                    <input type="text" formControlName="prefix" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group">
+                                    <label>ชื่อ <span class="star-required">*</span></label>
+                                    <input type="text" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.first_name.errors }">
+                                    <div *ngIf="submitted_edit && editForm.controls.first_name.errors" class="text-danger">
+                                        <div *ngIf="editForm.controls.first_name.errors.required">กรุณากรอกชื่อ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group">
+                                    <label>นามสกุล <span class="star-required">*</span></label>
+                                    <input type="text" formControlName="last_name" class="form-control" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.last_name.errors }">
+                                    <div *ngIf="submitted_edit && editForm.controls.last_name.errors" class="text-danger">
+                                        <div *ngIf="editForm.controls.last_name.errors.required">กรุณากรอกนามสกุล</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group">
+                                    <label>เลขบัตรประชาชน <span class="star-required">*</span></label>
+                                    <input type="text" formControlName="identity_no" class="form-control" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.identity_no.errors }">
+                                    <div *ngIf="submitted_edit && editForm.controls.identity_no.errors" class="text-danger">
+                                        <div *ngIf="editForm.controls.identity_no.errors.required">กรุณากรอกเลขบัตรประชาชน</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="form-group">
+                                    <label>เลขที่บัญชีธนาคาร </label>
+                                    <input type="text" formControlName="bank_account_no" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>ประเภทการเจนหุ้นลอย </label>
+                                    <select formControlName="share_type" class="form-control">
+                                        <option value="" [selected]="true">ไม่ระบุ</option>
+                                        <option value="EP">บุคคลภายนอก</option>
+                                        <option value="IE">พนักงานภายใน</option>
+                                        <option value="SG">รปภ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>เบอร์โทรศัพท์ </label>
+                                    <input type="text" formControlName="mobile" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>ที่อยู่ </label>
+                                    <input type="text" formControlName="address_detail" class="form-control" placeholder="ที่อยู่ เช่น บ้านเลขที่ หมู่บ้าน หมู่ที่ ..." >
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>จังหวัด </label>
+                                    <select formControlName="provinceMain" class="form-control" (change)="getAmphur($event.target.value)" >
+                                        <option value="" [selected]="true">--- เลือกจังหวัด ---</option>
+                                        <option *ngFor="let province of countryJson; let count = index;" value="{{count}}|{{province[0]}}">{{province[0]}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>อำเภอ </label>
+                                    <select formControlName="amphurMain" class="form-control" (change)="getThumbon($event.target.value)" >
+                                        <option value="" [selected]="true">--- เลือกอำเภอ ---</option>
+                                        <option *ngFor="let amphur of amphurJson; let count = index;" value="{{count}}|{{amphur[0]}}">{{amphur[0]}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>ตำบล </label>
+                                    <select formControlName="thumbonMain" class="form-control" (change)="getPost($event.target.value)" >
+                                        <option value="" [selected]="true">--- เลือกตำบล ---</option>
+                                        <option *ngFor="let thumbon of thumbonJson; let count = index;" value="{{count}}|{{thumbon[0]}}">{{thumbon[0]}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>รหัสไปรษณีย์ </label>
+                                    <input type="text" formControlName="postcode" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-success" (click)="update(editForm.value)">บันทึก</button>
+                    <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Edit modal-->
+    
+    
+        <div class="modal" id="modal-outsider-remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body center remove-modal-bg-content">
+                            <i class="fa fa-exclamation-circle warnnig-remove-icon" aria-hidden="true"></i><br />
+                            <span class="warnnig-remove-text">
+                                คุณต้องการลบข้อมูลรายการนี้
+                            </span>
+                        </div>
+                        <div class="modal-footer center">
+                                <button type="button" class="btn btn-rounded btn-danger" (click)="deleteProcess()">ยืนยัน</button>&nbsp;
+                                <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit modal-->

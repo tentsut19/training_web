@@ -1,0 +1,18 @@
+<div class="preloader">
+  <div class="lds-ripple">
+    <div class="lds-pos"></div>
+    <div class="lds-pos"></div>
+  </div>
+</div>
+<div id="main-wrapper" *ngIf="tisToken != null;else login_content">
+  <layout-header></layout-header>
+  <layout-menu-left></layout-menu-left>
+  <div class="page-wrapper">
+    <router-outlet></router-outlet>
+    <layout-footer></layout-footer>
+  </div>
+</div>
+
+<ng-template #login_content>
+  <login-init></login-init>
+</ng-template>

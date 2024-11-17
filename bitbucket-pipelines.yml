@@ -1,0 +1,24 @@
+image: node:18.19
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - npm install --legacy-peer-deps
+          - npm install -g @angular/cli
+          - export NODE_OPTIONS=--openssl-legacy-provider; ng build --configuration=uat
+          - cd dist/tis
+          - pipe: atlassian/aws-s3-deploy:0.2.4
+            variables:
+                AWS_ACCESS_KEY_ID: 'AKIAINQBYGZ7XZUIYFWA'
+                AWS_SECRET_ACCESS_KEY: '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'
+                AWS_DEFAULT_REGION: 'ap-southeast-1'
+                S3_BUCKET: 'tis7.com'
+                LOCAL_PATH: '$(pwd)'
+          - pipe: docker://rudijs/aws-cloudfront-create-invalidation:1.0.2
+            variables:
+              AWS_ACCESS_KEY_ID: 'AKIAINQBYGZ7XZUIYFWA'
+              AWS_SECRET_ACCESS_KEY: '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'
+              DISTRIBUTION_ID: 'E2YF4C8KV71YG2'

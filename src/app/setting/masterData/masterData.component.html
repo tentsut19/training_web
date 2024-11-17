@@ -1,0 +1,155 @@
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">ข้อมูลพื้นฐาน</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">ข้อมูลพื้นฐาน</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-7 align-self-center"></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            ค้นหาข้อมูลพื้นฐาน
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex no-block justify-content-end align-items-center">
+                                <button type="button" class="btn btn-rounded btn-success" data-toggle="modal" data-target="#modal-masterData-add"><i
+                                        class="fa fa-plus"></i> เพิ่มข้อมูลพื้นฐาน</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group m-b-30">
+                                    <label for="master-data-category-search">หมวดหมู่</label>
+                                    <select class="form-control" formControlName="category">
+                                        <option value="">--- ทั้งหมด ---</option>
+                                        <option *ngFor="let item of masterDataCategory" value="{{item.category}}">{{item.category}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                <button type="button" class="btn btn-rounded btn-info" style="margin-top: 3.5%;" (click)="search(searchForm.value)"><i class="fa fa-search"></i> ค้นหา</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            รายการข้อมูลพื้นฐาน
+                        </div>
+                        <div class="col-3">
+                             
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="master_data_table" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;" class="center">ลำดับ</th>
+                                    <th style="width: 15%;">หมวดหมู่</th>
+                                    <th style="width: 15%;">รหัส</th>
+                                    <th style="width: 15%;">ข้อมูล</th>
+                                    <th style="width: 25%;" left="center">รายละเอียด</th>
+                                    <th style="width: 10%;" class="center">สถานะ</th>
+                                    <th style="width: 5%;" class="center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of masterDataList; index as i">
+                                    <td style="width: 5%;" class="center">{{i+1}}</td>
+                                    <td style="width: 15%;">{{item.category}}</td>
+                                    <td style="width: 15%;">{{item.code}}</td>
+                                    <td style="width: 15%;">{{item.data_value}}</td>
+                                    <td style="width: 25%;" class="left">{{item.description}}</td>
+                                    <td style="width: 10%;" class="center">
+                                        <span *ngIf="item.active == 1" style="color: #44bd32;">เปิดใช้งาน</span>
+                                        <span *ngIf="item.active != 1" style="color: #ff6e82;">ปิดใช้งาน</span>
+                                    </td>
+                                    <td style="width: 5%;" class="center">
+                                            <i class="fas fa-edit btn-edit" (click)="editDepartment(item.id)"></i>&nbsp;
+                                            <i class="fas fa-trash-alt btn-remove" (click)="deleteDepartment(item.id)"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+<!--Add modal-->
+<div class="modal" id="modal-masterData-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-add">
+                <h4 class="modal-title" id="exampleModalLabel1">เพิ่มข้อมูลพื้นฐาน</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="addForm">
+                    <div class="form-group">
+                        <label for="category" class="control-label">หมวดหมู่ <span class="star-required">*</span></label>
+                        <input type="text" class="form-control" id="category" formControlName="category" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.category.errors }">
+                        <div *ngIf="submitted_add &amp;&amp; addForm.controls.category.errors" class="text-danger">
+                            <div *ngIf="addForm.controls.category.errors.required">โปรดระบุหมวดหมู่</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="code" class="control-label">รหัส <span class="star-required">*</span></label>
+                        <input type="text" class="form-control" id="code" formControlName="code" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.code.errors }">
+                        <div *ngIf="submitted_add &amp;&amp; addForm.controls.code.errors" class="text-danger">
+                            <div *ngIf="addForm.controls.code.errors.required">โปรดระบุรหัส</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_value" class="control-label">ข้อมูล <span class="star-required">*</span></label>
+                        <input type="text" class="form-control" id="data_value" formControlName="data_value" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.data_value.errors }">
+                        <div *ngIf="submitted_add &amp;&amp; addForm.controls.data_value.errors" class="text-danger">
+                            <div *ngIf="addForm.controls.data_value.errors.required">โปรดระบุข้อมูล</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="control-label">รายละเอียด</label>
+                        <input type="text" class="form-control" id="description" formControlName="description">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-success" (click)="addMasterData(addForm.value)">บันทึก</button>
+                <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add modal-->

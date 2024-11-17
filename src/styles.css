@@ -1,0 +1,145 @@
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+    font-family: 'Prompt';
+    src: url('assets/font/thin/Prompt-Light.ttf') format('ttf'),
+        url('assets/font/thin/Prompt-Light.woff2') format('woff2'),
+        url('assets/font/thin/Prompt-Light.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    /*font-family: Prompt !important;*/
+    font-weight: 500 !important;
+    font-size: 15px !important;
+}
+
+.btn-edit{
+    color: #ff7f50;
+    cursor: pointer;
+}
+
+.btn-remove{
+    color:#ff4757;
+    cursor: pointer;
+}
+
+.btn-view{
+    color: #36bea6;
+    cursor: pointer;
+}
+
+.center{
+    text-align: center;
+}
+
+.star-required{
+    color: #ff0000;
+}
+
+.warnnig-remove-icon{
+    font-size: 30px;
+}
+
+.warnnig-remove-text{
+    font-size: 20px;
+}
+
+.remove-modal-bg-content{
+    background: #f62d51;
+    color: #fff;
+}
+.modal-header-add{
+    background: #36bea6;
+    color: #fff;
+}
+
+.modal-header-edit{
+    background: #fb8c00;
+    color: #fff;
+}
+
+.modal-header-view{
+    background: #36bea6;
+    color: #fff;
+}
+
+.card-header-cover-table{
+    /*background: #e2e2e2 !important;*/
+    /*color: #414755 !important;*/
+}
+
+.table th, .table td {
+    padding: 0.5rem !important;
+    vertical-align: top;
+    border-top: 1px solid #e9ecef;
+}
+
+.oc-border {
+    border: 1px solid #36bea6 !important;
+}
+ 
+.oc-background {
+    background-color: #36bea6 !important;
+}
+ 
+.oc-name {
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    white-space: nowrap;
+    color: #fff !important;
+}
+ 
+.oc-designation {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.custom-legend-header{
+    font-size: 14px;
+    font-weight: bold;
+    color: #2962ff;
+}
+
+thead{
+    background: #51ccb6;
+    color: #fff;
+    font-weight: bold !important;
+    font-size: 17px;
+}
+
+.table-condensed > thead{
+    background: #fff;
+    color: #000;
+    font-weight: bold !important;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #44bd32 !important;
+    border-color: #44bd32 !important;
+}
+ 
+input {
+    border-radius: 7px !important;
+    border: 1px solid #cacaca !important;
+}
+select {
+    border-radius: 7px !important;
+    border: 1px solid #cacaca !important;
+}
+textarea {
+    border-radius: 10px !important;
+    border: 1px solid #cacaca !important;
+}
+.swal2-popup{
+    border-radius: 15px !important;
+}
+/*background: rgb(40,117,228);
+background: linear-gradient(101deg, rgba(40,117,228,1) 3%, rgba(64,128,220,1) 72%);*/
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+}

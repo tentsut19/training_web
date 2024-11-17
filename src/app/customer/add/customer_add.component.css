@@ -1,0 +1,12 @@
+.bg-tis-emp{
+    background: #f5feff;
+}
+  
+.downloadButton {
+    display: flex;
+    justify-content: center;
+}
+
+agm-map{
+    height: 500px
+}

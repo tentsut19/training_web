@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+}
+
+.mat-header-cell.green-header {
+  background-color: #4caf50; /* Use your desired green color */
+  color: white; /* Text color for the header cells */
+}
+
+.input-search {
+  height: 50px;
+  font-size: 20px;
+  border-color: blue;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url('../../../assets/images/icon/icons8-search-64.png');
+  background-repeat: no-repeat;
+  background-position: center right calc(0.375em + 0.1875rem);
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem); 
+}

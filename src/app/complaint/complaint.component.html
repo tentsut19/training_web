@@ -1,0 +1,190 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "small" color = "#fff" type = "line-scale-party" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="page-breadcrumb">
+  <div class="row">
+      <div class="col-5 align-self-center">
+          <h4 class="page-title">ระบบลูกค้าสัมพันธ์</h4>
+          <div class="d-flex align-items-center">
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">เรื่องร้องเรียน</li>
+                  </ol>
+              </nav>
+          </div>
+      </div>
+      <div class="col-7 align-self-center">
+          <div class="d-flex no-block justify-content-end align-items-center">
+              <a type="button" *ngIf="!isAdd" class="btn btn-rounded btn-success" (click)="openComplaint()" style="color: #FFFFFF;"><i class="fa fa-plus"></i> สร้างเรื่องร้องเรียน</a>
+          </div>
+      </div>
+  </div>
+</div>
+<br />
+<div class="container-fluid">
+    <div *ngIf="isAdd" class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    สร้างเรื่องร้องเรียน
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="complaintForm">
+                        <div class="form-group">
+                            <label class="control-label">ลูกค้า <span class="star-required">*</span></label>
+                            <mat-form-field *ngIf="isShowCustomerCompany" style="width: 100%;" [formGroup]="formDataCustomerCompany">
+                                <mat-select formControlName="valueSelect" placeholder="ลูกค้า" (ngModelChange)="changeCustomer($event)" #singleSelect>
+                                    <mat-option>
+                                    <ngx-mat-select-search placeholderLabel="ค้นหา ลูกค้า" noEntriesFoundLabel="ไม่มีลูกค้า"
+                                    [formControl]="customerCompanyFilterCtrl"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let customerCompany of filteredCustomerCompanyList | async" [value]="customerCompany">
+                                    {{customerCompany.name_main}} | {{customerCompany.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!isShowCustomerCompany" >กำลังโหลดข้อมูล...</span>
+                            <div *ngIf="submitted &amp;&amp; complaintForm.controls.customer_id.errors" class="text-danger">
+                                <div *ngIf="complaintForm.controls.customer_id.errors.required">โปรดระบุ ลูกค้า</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">เรื่องร้องเรียน <span class="star-required">*</span></label>
+                            <textarea class="form-control" rows="5" formControlName="record_story"
+                            [ngClass]="{ 'is-invalid': submitted &amp;&amp; complaintForm.controls.record_story.errors }"></textarea>
+                            <div *ngIf="submitted &amp;&amp; complaintForm.controls.record_story.errors" class="text-danger">
+                                <div *ngIf="complaintForm.controls.record_story.errors.required">โปรดระบุ สินค้า</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">ใบคาร์/ใบพาร์ <span class="star-required">*</span></label>
+                            <select formControlName="complaint_type" class="form-control" >
+                                <option value="0">ใบคาร์</option>
+                                <option value="1">ใบพาร์</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">ผู้รับผิดชอบ <span class="star-required">*</span></label>
+                            <mat-form-field *ngIf="isShowEmployee" style="width: 100%;" [formGroup]="formDataEmployee">
+                                <mat-select formControlName="valueSelect" placeholder="ผู้รับผิดชอบ" (ngModelChange)="changeEmployee($event)" #singleSelect>
+                                    <mat-option>
+                                    <ngx-mat-select-search placeholderLabel="ค้นหา ผู้รับผิดชอบ" noEntriesFoundLabel="ไม่มีผู้รับผิดชอบ"
+                                    [formControl]="employeeFilterCtrl"></ngx-mat-select-search>
+                                    </mat-option>
+                                    <mat-option *ngFor="let employee of filteredEmployeeList | async" [value]="employee">
+                                    {{employee.first_name}} {{employee.last_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <span *ngIf="!isShowEmployee" >กำลังโหลดข้อมูล...</span>
+                            <div *ngIf="submitted &amp;&amp; complaintForm.controls.employee_id.errors" class="text-danger">
+                                <div *ngIf="complaintForm.controls.employee_id.errors.required">โปรดระบุ ผู้รับผิดชอบ</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">สรุปปิดเรื่องร้องเรียน</label>
+                            <textarea class="form-control" rows="5" formControlName="conclusion"></textarea>
+                        </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-success" (click)="submitComplaint()">บันทึกสร้างเรื่องร้องเรียน</button>
+                      <button type="button" class="btn btn-info" (click)="submitCloseComplaint()">บันทึกปิดเรื่องร้องเรียน</button>
+                      <button type="button" class="btn btn-light" (click)="closeComplaint()">ปิด</button>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="row">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-header card-header-cover-table">
+                รายชื่อลูกค้า
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table id="customer_table" class="table table-striped table-bordered">
+                          <thead>
+                              <tr>
+                                <th style="width: 10%;">วันที่รับเรื่อง</th>
+                                <th style="width: 5%;">ใบคาร์/ใบพาร์</th>
+                                <th style="width: 25%;">เรื่องร้องเรียน</th>
+                                <th style="width: 20%;">ผู้รับผิดชอบ</th>
+                                <th style="width: 20%;">ลูกค้า/หน่วยงาน</th>
+                                <th style="width: 25%;">สรุปปิดเรื่องร้องเรียน</th>
+                                <th style="width: 10%;">วันที่ปิดเรื่อง</th>
+                                <th style="width: 5%;">สถานะ</th>
+                                <th style="width: 10%;"></th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of customerList; index as i">
+                                <td style="width: 10%;">
+                                    {{item.created_at | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                                <td style="width: 5%;">
+                                    <span *ngIf="item.complaint_type == '0'" >ใบคาร์</span>
+                                    <span *ngIf="item.complaint_type == '1'" >ใบพาร์</span>
+                                </td>
+                                <td style="width: 25%;">
+                                    <textarea class="form-control" rows="5" [disabled]="true">{{item.record_story}}</textarea>
+                                </td>
+                                <td style="width: 20%;">
+                                    <small style="color: gray;">
+                                        <b>ผู้รับผิดชอบ&nbsp;:&nbsp;{{item.prefix}}{{item.first_name}} {{item.last_name}}</b>
+									</small><br>
+                                    <small style="color: gray;">
+                                        <b>เบอร์ผู้รับผิดชอบ&nbsp;:&nbsp;{{item.mobile}}</b>
+									</small>
+                                </td>
+                                <td style="width: 20%;">
+                                    <small style="color: gray;">
+                                        <b>ข้อมูลบริษัท (สำนักงานใหญ่)&nbsp;:&nbsp;{{item.name}}</b>
+									</small><br>
+                                    <small style="color: gray;">
+                                        <b>ข้อมูลสาขา&nbsp;:&nbsp;{{item.name_main}}</b>
+									</small>
+                                </td>
+                                <td style="width: 25%;">
+                                    <textarea class="form-control" rows="5" [disabled]="true">{{item.conclusion}}</textarea>
+                                </td>
+                                <td style="width: 10%;">
+                                    {{item.updated_at | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                </td>
+                                <td style="width: 5%;">
+                                    <span style="color: orange;" *ngIf="item.status == '0'" >เปิดเรื่อง</span>
+                                    <span style="color: green;" *ngIf="item.status == '1'" >ปิดเรื่อง</span>
+                                </td>
+                                <td style="width: 10%;">
+                                    <i *ngIf="item.status != '1'" class="fas fa-edit btn-edit" (click)="edit(item.id)"></i>&nbsp;
+                                    <i *ngIf="item.status != '1'" class="fas fa-trash-alt btn-remove" (click)="delete(item.id)"></i>
+                                </td>
+                            </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- Start Modal Delete -->
+<div class="modal" id="modal-remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body center remove-modal-bg-content">
+                <i class="fa fa-exclamation-circle warnnig-remove-icon" aria-hidden="true"></i><br />
+                <span class="warnnig-remove-text">
+                    คุณต้องการลบข้อมูลนี้
+                </span>
+            </div>
+            <div class="modal-footer center">
+                    <button type="button" class="btn btn-danger" (click)="deleteProcess()">ยืนยัน</button>&nbsp;
+                    <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Delete -->

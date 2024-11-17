@@ -1,0 +1,588 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "small" color = "#fff" type = "line-scale-party" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">ประวัติการทำงาน</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">ประวัติการทำงาน</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </div>
+  <br /> 
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            ตารางการปฏิบัติงาน
+                            <span style="font-weight: normal;color:#388af2;">&nbsp;({{employee?.prefix}}{{employee?.first_name}} {{employee?.last_name}})</span>
+                        </div>
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card col-sm-12 col-md-12">
+                            <form [formGroup]="searchForm" id="add-form">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-2">
+                                        <div class="form-group m-b-30">
+                                            <label for="holiday-year-search">เดือน</label>
+                                            <select class="form-control" formControlName="month">
+                                                <option value="1-0">มกราคม (1-15)</option>
+                                                <option value="1-1">มกราคม (16-31)</option>
+                                                <option value="2-0">กุมภาพันธ์ (1-15)</option>
+                                                <option value="2-1">กุมภาพันธ์ (16-29)</option>
+                                                <option value="3-0">มีนาคม (1-15)</option>
+                                                <option value="3-1">มีนาคม (16-31)</option>
+                                                <option value="4-0">เมษายน (1-15)</option>
+                                                <option value="4-1">เมษายน (16-30)</option>
+                                                <option value="5-0">พฤษภาคม (1-15)</option>
+                                                <option value="5-1">พฤษภาคม (16-31)</option>
+                                                <option value="6-0">มิถุนายน (1-15)</option>
+                                                <option value="6-1">มิถุนายน (16-30)</option>
+                                                <option value="7-0">กรกฎาคม (1-15)</option>
+                                                <option value="7-1">กรกฎาคม (16-31)</option>
+                                                <option value="8-0">สิงหาคม (1-15)</option>
+                                                <option value="8-1">สิงหาคม (16-31)</option>
+                                                <option value="9-0">กันยายน (1-15)</option>
+                                                <option value="9-1">กันยายน (16-30)</option>
+                                                <option value="10-0">ตุลาคม (1-15)</option>
+                                                <option value="10-1">ตุลาคม (16-31)</option>
+                                                <option value="11-0">พฤศจิกายน (1-15)</option>
+                                                <option value="11-1">พฤศจิกายน (16-30)</option>
+                                                <option value="12-0">ธันวาคม (1-15)</option>
+                                                <option value="12-1">ธันวาคม (16-31)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-2">
+                                        <div class="form-group m-b-30">
+                                            <label for="holiday-year-search">ปี พ.ศ.</label>
+                                            <select class="form-control" formControlName="year">
+                                                <option *ngFor="let item of yearList" value="{{item?.enYear}}">{{item?.thYear}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-2">
+                                        <div class="form-group m-b-30">
+                                            <label for="employeeId">พนักงาน</label>
+                                            <!--<select class="form-control" formControlName="customerId">
+                                                <option value="">--- กรุณาเลือก ---</option>
+                                                <option *ngFor="let item of customerList" value="{{item.id}}">({{item.code}}) {{item.name}}</option>
+                                            </select>-->
+                                            <mat-select [formControl]="empCtrl" placeholder="" #singleSelect>
+                                                <mat-option>
+                                                  <ngx-mat-select-search [formControl]="empFilterCtrl" ngDefaultControl></ngx-mat-select-search>
+                                                </mat-option>
+                                          
+                                                <mat-option *ngFor="let emp of filteredEmp | async" [value]="emp">
+                                                  {{emp.name}}
+                                                </mat-option>
+                                              </mat-select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-2">
+                                        <div class="form-group m-b-30">
+                                            <button type="button" class="btn btn-rounded btn-info" style="margin-top: 15%;" (click)="searchCheckPoint(searchForm.value)"><i class="fa fa-search"></i> ค้นหา</button>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body" style="padding:0px !important">
+                                    <div class="row">
+                                        <div class="col-12" style="text-align: right;padding-bottom: 10px;">
+                                            <button type="button" class="btn btn-rounded btn-primary" 
+                                            *ngIf="dayList.length > 0" (click)="showSlipDetail()">
+                                                รายละเอียดสลิป
+                                              </button> &nbsp;
+                                            <button type="button" class="btn btn-rounded btn-success" 
+                                            *ngIf="dayList.length > 0" (click)="printMonthSlip(employeeId)">
+                                                พิมพ์สลิป
+                                              </button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-bordered">
+                                        <thead style="background: #54a0ff;">
+                                            <tr>
+                                                <th class="tb-main-col-checkpoint" style="font-weight: bold;">หน่วยงาน/พนักงาน</th>
+                                                <ng-container *ngFor="let item of dayList;let i = index">
+                                                    <th class="tb-main-col-checkpoint" style="font-weight: bold;">{{item}}</th>
+                                                </ng-container>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let item of checkPointRecheck;let i = index">
+                                               <!-- <tr>
+                                                    <td style="font-weight: bold;background: #cadef8;">
+                                                        {{item.prefix}}{{item.first_name}} {{item.last_name}}
+                                                    </td>
+                                                    <ng-container *ngFor="let dayEmpItem of dayList;let countDayEmpItem = index">
+                                                        <td style="background: #cadef8;">
+                                                             <span>{{dayEmpItem}}</span> 
+                                                        </td>
+                                                    </ng-container>
+                                                </tr> -->
+                                                <ng-container *ngFor="let customerWork of item.customerWorkList;let countCustomerWork = index">
+                                                    <tr style="background: #c7dce7;">
+                                                        <td style="background-color: #ffffff;">
+                                                            {{customerWork.customerName}}
+                                                        </td>
+                                                        <ng-container *ngFor="let workItem of customerWork.workList;let countWorkItem = index">
+                                                            <td 
+                                                            style="text-align: center;"
+                                                            [ngClass]="{
+                                                                'status-blue' : workItem.status=='SL',
+                                                                'status-grey' : workItem.status=='L' || workItem.status=='S' || workItem.status=='OF' || workItem.status=='M',
+                                                                'status-green' : workItem.status=='AL' || workItem.status=='ALW' || workItem.status=='H',
+                                                                'status-dark-blue' : ((workItem.status=='W' && workItem.day) || (workItem.status=='A' && workItem.day) || (workItem.status=='AA' && workItem.day) || (workItem.status=='HE' && workItem.day) 
+                                                                || (workItem.status=='AAD' && workItem.day) || (workItem.status=='AAN' && workItem.day) || (workItem.status=='AADN' && workItem.day)),
+                                                                'status-red' : ((workItem.status=='W' && workItem.nigth) || (workItem.status=='A' && workItem.nigth)|| (workItem.status=='AA' && workItem.nigth) || (workItem.status=='HE' && workItem.nigth) 
+                                                                || (workItem.status=='AAD' && workItem.nigth) || (workItem.status=='AAN' && workItem.nigth) || (workItem.status=='AADN' && workItem.nigth)),
+                                                                'bg-workdn' : ((workItem.status=='W' && workItem.day && workItem.nigth) || (workItem.status=='A' && workItem.day && workItem.nigth) || (workItem.status=='AA' && workItem.day && workItem.nigth) || (workItem.status=='HE' && workItem.day && workItem.nigth) 
+                                                                || (workItem.status=='AADN' && workItem.day && workItem.nigth) || (workItem.status=='AAD' && workItem.day && workItem.nigth) || (workItem.status=='AAN' && workItem.day && workItem.nigth)),
+                                                                'status-past-time' : workItem.status=='PA',
+                                                                'status-not-work' : (workItem.status==''||workItem.status==null) || (workItem.status=='W' && !workItem.day && !workItem.nigth)
+                                                                }">
+                                                                <span *ngIf="workItem.status=='W' && workItem.day">ทำงาน(D)<br /></span>
+                                                                <span *ngIf="workItem.status=='W' && workItem.nigth">ทำงาน(N)</span>
+                                                                <span *ngIf="workItem.status=='HE' && workItem.day">ช่วย(D)<br /></span>
+                                                                <span *ngIf="workItem.status=='HE' && workItem.nigth">ช่วย(N)</span>
+                                                                <span *ngIf="workItem.status=='A' && workItem.day">เสริม(D)<br /></span>
+                                                                <span *ngIf="workItem.status=='A' && workItem.nigth">เสริม(N)</span>
+                                                                <span *ngIf="workItem.status=='AA' && workItem.day">ควง(D)<br /></span>
+                                                                <span *ngIf="workItem.status=='AA' && workItem.nigth">ควง(N)</span>
+                                                                <span *ngIf="workItem.status=='AAD'">ควง(จ่ายสด D)</span>
+                                                                <span *ngIf="workItem.status=='AAN'">ควง(จ่ายสด N)</span>
+                                                                <span *ngIf="workItem.status=='AADN'">ควง(จ่ายสด DN)</span>
+                                                                <span *ngIf="workItem.status=='PA'">พาร์สทาม</span>
+                                                                <span *ngIf="workItem.status=='H'">นักขัตฤกษ์</span>
+                                                                <span *ngIf="workItem.status=='S'">อาทิตย์<br />(จ่ายสด)</span>
+                                                                <span *ngIf="workItem.status=='SL'">ลาป่วย</span>
+                                                                <span *ngIf="workItem.status=='AL'">ลาพักร้อน</span>
+                                                                <span *ngIf="workItem.status=='ALW'">ลาพักร้อนทำงาน</span>
+                                                                <span *ngIf="workItem.status=='L'">ลากิจ</span>
+                                                                <span *ngIf="workItem.status=='OF'">OFF</span>
+                                                                <span *ngIf="workItem.status=='M'">ขาด</span>
+                                                                <div *ngIf="workItem.day || workItem.nigth">
+                                                                    <span style="font-size: 12px;" *ngIf="workItem.day">{{workItem.waged | number : '1.2'}}</span>
+                                                                    <span style="font-size: 12px;" *ngIf="workItem.nigth">{{workItem.wagen | number : '1.2'}}</span>
+                                                                </div>
+                                                            </td>
+                                                        </ng-container>
+                                                    </tr>
+                                                </ng-container>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="dayList.length > 0 && isShowSlip">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-bordered">
+                        <thead style="background: #54a0ff;">
+                            <tr>
+                                <th style="background-color: #55a0ff;width: 10%;">ชื่อ-นามสกุล</th>
+                                <th style="text-align: center;background-color: #55a0ff;">รายรับ</th>
+                                <th style="text-align: center;background-color: #55a0ff;">รายจ่าย</th>
+                                <th style="text-align: center;width: 5%;">คงเหลือ</th>
+                                <th style="text-align: center;background-color: #55a0ff;width: 10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let customer of checkPointModel.customerList;let i = index">
+                                <ng-container *ngIf="customerSearchId == customer.customerId">
+                                    <tr>
+                                        <td colspan="5">
+                                            <div style="font-weight: bold;font-size: 30px;">
+                                                หน่วยงาน : {{customer.customerName}}
+                                                <span *ngIf="customer.isAudit" style="color:orange;">&nbsp;(AUDIT)</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngFor="let employee of customer.employeeList;let countEmp = index">
+
+                                        <ng-container *ngIf="employeeId == employee.employeeId">
+                                        <tr *ngIf="!employee.isHH">
+                                            <td>
+                                                {{employee.firstName}}&nbsp;{{employee.lastName}}
+                                            </td>
+                                            <td style="vertical-align: top;">
+                                                <!--รายรับ-->
+                                                <div class="row">
+                                                    <div class="col-12" style="text-align: right;"> 
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row" *ngFor="let income of employee.incomeList;let countDeduct = index">
+                                                    <div class="col-3">
+                                                        <span *ngIf="income.incomeType == 'FIX'">{{income.name}}</span>
+                                                        <input type="text" [(ngModel)]="income.name" class="form-control"
+                                                            *ngIf="income.incomeType == 'MANUAL'"
+                                                            style="background-color: #ffffff;" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" [(ngModel)]="income.quantity" class="form-control"
+                                                            disabled *ngIf="income.editType == 0"
+                                                            style="background-color: #f1f4f9;" />
+            
+                                                        <input type="number" [(ngModel)]="income.quantity" class="form-control"
+                                                            *ngIf="income.editType == 1"
+                                                            (keyup)="incomeChange(customer.customerId,employee.employeeId,income.code,$event.target.value)"
+                                                            style="background-color: #ffffff;" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <span>ราคา</span>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" [(ngModel)]="income.price" class="form-control"
+                                                            *ngIf="income.editType == 0" disabled
+                                                            style="background-color: #f1f4f9;" />
+            
+                                                        <input type="number" [(ngModel)]="income.price" class="form-control"
+                                                            *ngIf="income.editType == 1"
+                                                            (keyup)="incomeChange(customer.customerId,employee.employeeId,income.code,$event.target.value)"
+                                                            style="background-color: #ffffff;" />
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <span>รวม</span>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" [(ngModel)]="income.total" class="form-control"
+                                                            disabled style="background-color: #88f5a5;" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-10" style="text-align: right;">
+                                                        <span style="font-weight: bold;">รวมรายรับ</span>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" [(ngModel)]="employee.totalIncome"
+                                                            style="background-color: #179904e3;color: #ffffff;" class="form-control"
+                                                            disabled />
+                                                        <!--<span style="background-color: #22bba6;">
+                                                                {{employee.totalIncome | number : '1.2-2'}}
+                                                            </span>-->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="vertical-align: top;">
+                                                <div class="row">
+                                                    <div class="col-12" style="text-align: right;"> 
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <!--รายจ่าย/รายการหัก-->
+                                                <ng-container *ngFor="let deduct of employee.deductList;let countDeduct = index">
+                                                    <div class="row"
+                                                        *ngIf="deduct.code != '002' && deduct.code != '003' && deduct.code != '004' && deduct.code != '005'">
+                                                        <div class="col-3">
+                                                            <span *ngIf="deduct.incomeType == 'FIX'">{{deduct.name}}</span>
+                                                            <input type="text" [(ngModel)]="deduct.name" class="form-control"
+                                                                *ngIf="deduct.incomeType == 'MANUAL'"
+                                                                style="background-color: #ffffff;" />
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.quantity" class="form-control"
+                                                                *ngIf="deduct.editType == 0" disabled
+                                                                style="background-color: #f1f4f9;" />
+            
+                                                            <input type="number" [(ngModel)]="deduct.quantity"
+                                                                *ngIf="deduct.editType == 1"
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                class="form-control" style="background-color: #ffffff;" />
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <span>ราคา</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.price" class="form-control"
+                                                                disabled style="background-color: #f1f4f9;"
+                                                                *ngIf="deduct.code != '001' || deduct.code == '003' || deduct.code == '004' || deduct.code == '005'" />
+                                                            <input type="number" [(ngModel)]="deduct.price" class="form-control"
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                *ngIf="deduct.code != '003' && deduct.code != '004' && deduct.code != '005'" />
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span>รวม</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.total" class="form-control"
+                                                                disabled style="background-color: #ffc7c7;" />
+                                                        </div>
+                                                    </div>
+            
+                                                    <!-- 002 -->
+                                                    <div class="row" *ngIf="deduct.code == '002'"
+                                                        style="padding-top: 10px;border-top: 1px solid #dbdbdb;">
+                                                        <div class="col-5">
+                                                            <span style="font-weight: bold">{{deduct.name}}</span>
+                                                            <div>
+                                                                <i class="fa fa-plus" style="cursor: pointer;color: green;"
+                                                                    (click)="addDeductExtendList005(customer.customerId,employee.employeeId,'002')"></i>
+                                                                <br />
+                                                                <div class="row"
+                                                                    *ngFor="let extend002 of deduct.deductExtendList;let countExtend002 = index">
+                                                                    <div class="col-6">
+                                                                        <input type="text" [(ngModel)]="extend002.desc"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-5">
+                                                                        <input type="number" [(ngModel)]="extend002.amount"
+                                                                            (keyup)="calculateDeduct005(customer.customerId,employee.employeeId,'002')"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <i class="fa fa-trash" style="cursor: pointer;color: red;"
+                                                                            (click)="removeDeductExtendList005(customer.customerId,employee.employeeId,countExtend002,'002')"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="col-2">
+                                                                <input type="number" [(ngModel)]="deduct.quantity" class="form-control" disabled style="background-color: #f1f4f9;"/>
+                                                            </div>-->
+                                                        <div class="col-2">
+                                                            <!--<span>ราคา</span>-->
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <!-- <input type="number" [(ngModel)]="deduct.price" class="form-control" disabled style="background-color: #f1f4f9;" 
+                                                                *ngIf="deduct.code == '001' || deduct.code == '003' || deduct.code == '005'"/>
+                                                                <input 
+                                                                type="number" 
+                                                                [(ngModel)]="deduct.price" 
+                                                                class="form-control" 
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                *ngIf="deduct.code != '001' && deduct.code != '003' && deduct.code != '005'"
+                                                                /> -->
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span>รวม</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.total" class="form-control"
+                                                                disabled style="background-color: #ffc7c7;" />
+                                                        </div>
+                                                    </div>
+            
+                                                    <!-- 003 -->
+                                                    <div class="row" *ngIf="deduct.code == '003'"
+                                                        style="padding-top: 10px;border-top: 1px solid #dbdbdb;">
+                                                        <div class="col-5">
+                                                            <span style="font-weight: bold">{{deduct.name}}</span>
+                                                            <div>
+                                                                <i class="fa fa-plus" style="cursor: pointer;color: green;"
+                                                                    (click)="addDeductExtendList005(customer.customerId,employee.employeeId,'003')"></i>
+                                                                <br />
+                                                                <div class="row"
+                                                                    *ngFor="let extend003 of deduct.deductExtendList;let countExtend003 = index">
+                                                                    <div class="col-6">
+                                                                        <input type="text" [(ngModel)]="extend003.desc"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-5">
+                                                                        <input type="number" [(ngModel)]="extend003.amount"
+                                                                            (keyup)="calculateDeduct005(customer.customerId,employee.employeeId,'003')"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <i class="fa fa-trash" style="cursor: pointer;color: red;"
+                                                                            (click)="removeDeductExtendList005(customer.customerId,employee.employeeId,countExtend003,'003')"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="col-2">
+                                                                <input type="number" [(ngModel)]="deduct.quantity" class="form-control" disabled style="background-color: #f1f4f9;"/>
+                                                            </div>-->
+                                                        <div class="col-2">
+                                                            <!--<span>ราคา</span>-->
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <!-- <input type="number" [(ngModel)]="deduct.price" class="form-control" disabled style="background-color: #f1f4f9;" 
+                                                                *ngIf="deduct.code == '001' || deduct.code == '003' || deduct.code == '005'"/>
+                                                                <input 
+                                                                type="number" 
+                                                                [(ngModel)]="deduct.price" 
+                                                                class="form-control" 
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                *ngIf="deduct.code != '001' && deduct.code != '003' && deduct.code != '005'"
+                                                                /> -->
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span>รวม</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.total" class="form-control"
+                                                                disabled style="background-color: #ffc7c7;" />
+                                                        </div>
+                                                    </div>
+            
+                                                    <!-- 004 -->
+                                                    <div class="row" *ngIf="deduct.code == '004'"
+                                                        style="padding-top: 10px;border-top: 1px solid #dbdbdb;">
+                                                        <div class="col-5">
+                                                            <span style="font-weight: bold">{{deduct.name}}</span>
+                                                            <div>
+                                                                <i class="fa fa-plus" style="cursor: pointer;color: green;"
+                                                                    (click)="addDeductExtendList005(customer.customerId,employee.employeeId,'004')"></i>
+                                                                <br />
+                                                                <div class="row"
+                                                                    *ngFor="let extend004 of deduct.deductExtendList;let countExtend004 = index">
+                                                                    <div class="col-6">
+                                                                        <input type="text" [(ngModel)]="extend004.desc"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-5">
+                                                                        <input type="number" [(ngModel)]="extend004.amount"
+                                                                            (keyup)="calculateDeduct005(customer.customerId,employee.employeeId,'004')"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <i class="fa fa-trash" style="cursor: pointer;color: red;"
+                                                                            (click)="removeDeductExtendList005(customer.customerId,employee.employeeId,countExtend004,'004')"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="col-2">
+                                                                <input type="number" [(ngModel)]="deduct.quantity" class="form-control" disabled style="background-color: #f1f4f9;"/>
+                                                            </div>-->
+                                                        <div class="col-2">
+                                                            <!--<span>ราคา</span>-->
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <!--<input type="number" [(ngModel)]="deduct.price" class="form-control" disabled style="background-color: #f1f4f9;" 
+                                                                *ngIf="deduct.code == '001' || deduct.code == '003' || deduct.code == '005'"/>
+                                                                <input 
+                                                                type="number" 
+                                                                [(ngModel)]="deduct.price" 
+                                                                class="form-control" 
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                *ngIf="deduct.code != '001' && deduct.code != '003' && deduct.code != '005'"
+                                                                />-->
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span>รวม</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.total" class="form-control"
+                                                                disabled style="background-color: #ffc7c7;" />
+                                                        </div>
+                                                    </div>
+            
+                                                    <!-- 005 -->
+                                                    <div class="row" *ngIf="deduct.code == '005'"
+                                                        style="padding-top: 10px;padding-bottom: 10px;border-top: 1px solid #dbdbdb;border-bottom: 1px solid #dbdbdb;">
+                                                        <div class="col-5">
+                                                            <span style="font-weight: bold">{{deduct.name}}</span>
+                                                            <div>
+                                                                <i class="fa fa-plus" style="cursor: pointer;color: green;"
+                                                                    (click)="addDeductExtendList005(customer.customerId,employee.employeeId,'005')"></i>
+                                                                <br />
+                                                                <div class="row"
+                                                                    *ngFor="let extend005 of deduct.deductExtendList;let countExtend005 = index">
+                                                                    <div class="col-6">
+                                                                        <input type="text" [(ngModel)]="extend005.desc"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-5">
+                                                                        <input type="number" [(ngModel)]="extend005.amount"
+                                                                            (keyup)="calculateDeduct005(customer.customerId,employee.employeeId,'005')"
+                                                                            class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <i class="fa fa-trash" style="cursor: pointer;color: red;"
+                                                                            (click)="removeDeductExtendList005(customer.customerId,employee.employeeId,countExtend005,'005')"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="col-2">
+                                                                <input type="number" [(ngModel)]="deduct.quantity" class="form-control" disabled style="background-color: #f1f4f9;"/>
+                                                            </div>-->
+                                                        <div class="col-2">
+                                                            <!--<span>ราคา</span>-->
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <!--<input type="number" [(ngModel)]="deduct.price" class="form-control" disabled style="background-color: #f1f4f9;" *ngIf="deduct.code == '001' || deduct.code == '005'"/>
+                                                                <input 
+                                                                type="number" 
+                                                                [(ngModel)]="deduct.price" 
+                                                                class="form-control" 
+                                                                (keyup)="deductionChange(customer.customerId,employee.employeeId,deduct.code,$event.target.value)"
+                                                                *ngIf="deduct.code != '001' && deduct.code != '005'"
+                                                                />-->
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <span>รวม</span>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="number" [(ngModel)]="deduct.total" class="form-control"
+                                                                disabled style="background-color: #ffc7c7;" />
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+            
+                                                <div class="row">
+                                                    <div class="col-10" style="text-align: right;">
+                                                        <span style="font-weight: bold;">รวมรายจ่าย</span>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="text" [(ngModel)]="employee.totalDeduct"
+                                                            style="background-color: #e15857;color: #ffffff;" class="form-control"
+                                                            disabled />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{employee.totalIncome - employee.totalDeduct | number : '1.2-2'}}
+                                            </td>
+                                            <td>
+                                                {{employee.bankDetail}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+  

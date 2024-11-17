@@ -1,0 +1,1069 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "small" color = "#fff" type = "line-scale-party" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">เพิ่มข้อมูลลูกค้า</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">เพิ่มข้อมูลลูกค้า</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+  </div>
+  <br />
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-12">
+              <div class="card">
+                  <div class="card-header card-header-cover-table">
+                      <div class="row">
+                          <div class="col-3">
+                              ข้อมูลลูกค้า
+                          </div>
+                          <div class="col-9">
+                            <div style="float: right;" *ngIf="isView">
+                                <a class="btn btn-rounded btn-info" 
+                                    href="#customer-working-history/{{customerId}}" target="_blank">
+                               ประวัติงาน</a>&nbsp;
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <div class="qrcodeImage">
+                        <qrcode
+                          #parent
+                          [elementType]="elementType"
+                          [errorCorrectionLevel]="errorCorrectionLevel"
+                          [qrdata]="qrdata"
+                          [scale]="scale"
+                          [width]="width"
+                          [allowEmptyString]="true"
+                          [className]="cssClass"
+                          [colorDark]="colorDark"
+                          [colorLight]="colorLight"
+                          [margin]="margin"
+                          [alt]="alt"
+                          [ariaLabel]="ariaLabel"
+                          [title]="title"
+                          (qrCodeURL)="onChangeURL($event)"
+                        ></qrcode>
+                      </div>
+                      <div class="downloadButton">
+                        <button
+                          *ngIf="this.elementType !== 'svg'"
+                          type="button"
+                          class="btn btn-rounded btn-success"
+                          (click)="saveAsImage(parent)"
+                        >
+                          Download QR Code Image
+                        </button>
+                        <!-- <a
+                          *ngIf="this.elementType === 'svg'"
+                          mat-raised-button
+                          color="primary"
+                          [href]="qrCodeSrc"
+                          download="angularx-qrcode"
+                          >Download QR Code Image</a
+                        > -->
+                      </div>
+                      
+                    <form [formGroup]="addForm">
+                    <fieldset class="border p-2 bg-tis-emp">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> ข้อมูลบริษัท (สำนักงานใหญ่)</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6" *ngIf="!isView">
+                                <label for="personnelCode" class="control-label">ค้นหา บริษัท (สำนักงานใหญ่)</label><br/>
+                                <mat-form-field *ngIf="isShowCustomerCompany" style="width: 100%;" [formGroup]="formDataCustomerCompany">
+                                    <mat-select formControlName="valueSelect" placeholder="บริษัท (สำนักงานใหญ่)" (ngModelChange)="filterMyOptions($event)" #singleSelect>
+                                        <mat-option>
+                                        <ngx-mat-select-search placeholderLabel="ค้นหา บริษัท (สำนักงานใหญ่)" noEntriesFoundLabel="ไม่มีบริษัท (สำนักงานใหญ่)"
+                                        [formControl]="customerCompanyFilterCtrl"></ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let customerCompany of filteredCustomerCompanyList | async" [value]="customerCompany">
+                                        {{customerCompany.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <span *ngIf="!isShowCustomerCompany" >กำลังโหลดข้อมูล...</span>
+                                <!-- <app-single-selection [selectedValues]="['B']" (selectionChange)="selectionChanged($event)"></app-single-selection> -->
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label>ชื่อบริษัท (สำนักงานใหญ่) <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="customer_company_name" class="form-control" placeholder="ชื่อบริษัท (สำนักงานใหญ่)" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_name.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_name.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_name.errors.required">โปรดระบุชื่อบริษัท (สำนักงานใหญ่)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-4">
+                                <label>เบอร์โทรศัพท์ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="customer_company_mobile" class="form-control" placeholder="เบอร์โทรศัพท์" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_mobile.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_mobile.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_mobile.errors.required">โปรดระบุเบอร์โทรศัพท์</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label>อีเมล์ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="customer_company_email" class="form-control" placeholder="อีเมล์" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_email.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_email.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_email.errors.required">โปรดระบุอีเมล์</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label>ที่อยู่ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="customer_company_detail" class="form-control" placeholder="ที่อยู่" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_detail.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_detail.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_detail.errors.required">โปรดระบุที่อยู่</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>จังหวัด <span class="star-required">*</span></label>
+                                    <select formControlName="customer_company_province" class="form-control" (change)="getAmphurV2($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_province.errors }">
+                                        <option value="" [selected]="true">--- เลือกจังหวัด ---</option>
+                                        <option *ngFor="let province of countryJsonV2; let count = index;" value="{{count}}|{{province[0]}}">{{province[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_province.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_province.errors.required">โปรดเลือกจังหวัด</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>อำเภอ <span class="star-required">*</span></label>
+                                    <select formControlName="customer_company_amphur" class="form-control" (change)="getThumbonV2($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_amphur.errors }">
+                                        <option value="" [selected]="true">--- เลือกอำเภอ ---</option>
+                                        <option *ngFor="let amphur of amphurJsonV2; let count = index;" value="{{count}}|{{amphur[0]}}">{{amphur[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_amphur.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_amphur.errors.required">โปรดเลือกอำเภอ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>ตำบล <span class="star-required">*</span></label>
+                                    <select formControlName="customer_company_thumbon" class="form-control" (change)="getPostV2($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_thumbon.errors }">
+                                        <option value="" [selected]="true">--- เลือกตำบล ---</option>
+                                        <option *ngFor="let thumbon of thumbonJsonV2; let count = index;" value="{{count}}|{{thumbon[0]}}">{{thumbon[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_thumbon.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_thumbon.errors.required">โปรดเลือกตำบล</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>รหัสไปรษณีย์ <span class="star-required">*</span></label>
+                                    <input type="text" formControlName="customer_company_postcode" class="form-control" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.customer_company_postcode.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.customer_company_postcode.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.customer_company_postcode.errors.required">โปรดระบุรหัสไปรษณีย์</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 bg-tis-emp">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> ตำแหน่งแผนที่</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-7">
+                                <label>ค้นหาสถานที่ </label>
+                                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" 
+                                placeholder="ชื่อหน่วยงาน/สถานที่ใกล้เคียง" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+                            </div>   
+                            <div class="col-sm-12 col-md-2">
+                                <label>Latitude </label>
+                                <div class="form-group">
+                                    <input type="number" formControlName="latitude" class="form-control" (blur)="latLongChanged()" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-2">
+                                <label>Longitude </label>
+                                <div class="form-group">
+                                    <input type="number" formControlName="longitude" class="form-control" (blur)="latLongChanged()" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-2"> 
+                                <div class="form-check form-check-inline"> 
+                                    <input type="checkbox" id="flag_check_location" 
+                                    formControlName="flag_check_location" class="form-check-input">
+                                    <br /><br />
+                                    <label for="flag_check_location">เปิดใช้งาน </label>
+                                </div>
+                            </div>
+                        </div>
+                        <br /> 
+                        <div class="row" style="padding: 10px 0px 10px 0px;">
+                            <div class="col-sm-12 col-md-12">
+                                <span *ngIf="address" style="font-size: 18px;">Address : {{address}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-11">
+                                <agm-map 
+                                    [latitude]="latitude" 
+                                    [longitude]="longitude" 
+                                    [zoom]="16"
+                                    [mapTypeId]="mapType"
+                                    (mapClick)="onMapClicked($event)"
+                                    (mapMouseMove)="mapMouseMove($event)"
+                                    (mapReady)="onMapReady($event)">
+                                    <agm-marker [latitude]="latitude" [longitude]="longitude" (dragEnd)="markerDragEnd(marker, $event)" 
+                                    [markerDraggable]="true"></agm-marker>
+                                </agm-map>
+                                <!--<agm-drawing-manager #drawing="agmDrawingManager" (circleComplete)="circleAdded($event)" [drawingMode]="'circle'" [circleOptions]="{fillColor:'red', radius: 150}"></agm-drawing-manager>-->
+                            </div>
+                            <div class="col-sm-12 col-md-1">
+                                <button type="button" class="btn waves-effect waves-light btn-block btn-danger" 
+                                (click)="deleteSelectedShape()">
+                                    Clear </button>
+                                <button type="button" class="btn btn-block btn-outline-info" 
+                                (click)="changeMapType('roadmap')">
+                                    แบบปกติ </button>
+                                <button type="button" class="btn btn-block btn-outline-primary" style="margin-top: 5px;" 
+                                (click)="changeMapType('satellite')">
+                                    แบบดาวเทียม </button>    
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> ข้อมูลสาขา</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <label>ชื่อสาขา <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="name" class="form-control" placeholder="ชื่อสาขา" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.name.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.name.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.name.errors.required">โปรดระบุชื่อสาขา</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label>เบอร์โทรศัพท์ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="mobile" class="form-control" placeholder="เบอร์โทรศัพท์" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.mobile.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.mobile.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.mobile.errors.required">โปรดระบุเบอร์โทรศัพท์</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <label>อีเมล์ </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="email" class="form-control" placeholder="อีเมล์" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.email.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.email.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.email.errors.required">โปรดระบุอีเมล์</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <label>ที่อยู่ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="detail" class="form-control" placeholder="ที่อยู่" 
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.detail.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.detail.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.detail.errors.required">โปรดระบุชื่อ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>จังหวัด <span class="star-required">*</span></label>
+                                    <select formControlName="province" class="form-control" (change)="getAmphur($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.province.errors }">
+                                        <option value="" [selected]="true">--- เลือกจังหวัด ---</option>
+                                        <option *ngFor="let province of countryJson; let count = index;" value="{{count}}|{{province[0]}}">{{province[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.province.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.province.errors.required">โปรดเลือกจังหวัด</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>อำเภอ <span class="star-required">*</span></label>
+                                    <select formControlName="amphur" class="form-control" (change)="getThumbon($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.amphur.errors }">
+                                        <option value="" [selected]="true">--- เลือกอำเภอ ---</option>
+                                        <option *ngFor="let amphur of amphurJson; let count = index;" value="{{count}}|{{amphur[0]}}">{{amphur[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.amphur.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.amphur.errors.required">โปรดเลือกอำเภอ</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>ตำบล <span class="star-required">*</span></label>
+                                    <select formControlName="thumbon" class="form-control" (change)="getPost($event.target.value)" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.thumbon.errors }">
+                                        <option value="" [selected]="true">--- เลือกตำบล ---</option>
+                                        <option *ngFor="let thumbon of thumbonJson; let count = index;" value="{{count}}|{{thumbon[0]}}">{{thumbon[0]}}</option>
+                                    </select>
+                                    <div *ngIf="submitted_add && addForm.controls.thumbon.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.thumbon.errors.required">โปรดเลือกตำบล</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>รหัสไปรษณีย์ <span class="star-required">*</span></label>
+                                    <input type="text" formControlName="postcode" class="form-control" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.postcode.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.postcode.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.postcode.errors.required">โปรดระบุรหัสไปรษณีย์</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2 bg-tis-emp" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> ข้อมูลผู้ติดต่อ</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <label>ชื่อผู้ติดต่อ 1 <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_name_1" class="form-control" placeholder="ชื่อผู้ติดต่อ"
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.contact_name_1.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.contact_name_1.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.contact_name_1.errors.required">โปรดระบุชื่อผู้ติดต่อ 1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>ตำแหน่ง <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_position_1" class="form-control" placeholder="ตำแหน่ง"
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.contact_position_1.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.contact_position_1.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.contact_position_1.errors.required">โปรดระบุตำแหน่ง</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>เบอร์โทรศัพท์ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_phone_number_1" class="form-control" placeholder="เบอร์โทรศัพท์"
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.contact_phone_number_1.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.contact_phone_number_1.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.contact_phone_number_1.errors.required">โปรดระบุเบอร์โทรศัพท์</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>อีเมล์ <span class="star-required">*</span></label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_email_1" class="form-control" placeholder="อีเมล์"
+                                    [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.contact_email_1.errors }">
+                                    <div *ngIf="submitted_add && addForm.controls.contact_email_1.errors" class="text-danger">
+                                        <div *ngIf="addForm.controls.contact_email_1.errors.required">โปรดระบุอีเมล์</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <label>ชื่อผู้ติดต่อ 2 </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_name_2" class="form-control" placeholder="ชื่อผู้ติดต่อ">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>ตำแหน่ง </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_position_2" class="form-control" placeholder="ตำแหน่ง">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>เบอร์โทรศัพท์ </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_phone_number_2" class="form-control" placeholder="เบอร์โทรศัพท์">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>อีเมล์ </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_email_2" class="form-control" placeholder="อีเมล์">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <label>ชื่อผู้ติดต่อ 3 </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_name_3" class="form-control" placeholder="ชื่อผู้ติดต่อ">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>ตำแหน่ง </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_position_3" class="form-control" placeholder="ตำแหน่ง">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>เบอร์โทรศัพท์ </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_phone_number_3" class="form-control" placeholder="เบอร์โทรศัพท์">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <label>อีเมล์ </label>
+                                <div class="form-group">
+                                    <input type="text" formControlName="contact_email_3" class="form-control" placeholder="อีเมล์">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> ข้อมูลเพิ่มเติม</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4"> 
+                                <label>วันที่เจ้าหน้าที่ดูหน้างานเพื่อรวบรวมข้อมูล </label>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label>วัน</label>
+                                        <select class="form-control" formControlName="collect_data_d" >
+                                            <option *ngFor="let item of dayList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label>เดือน</label>
+                                        <select class="form-control" formControlName="collect_data_m" >
+                                            <option *ngFor="let item of monthList" value="{{item.key}}">{{item.description}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <label>ปี</label>
+                                        <select class="form-control" formControlName="collect_data_y" >
+                                            <option *ngFor="let item of yearList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-sm-12 col-md-3"> 
+                                <label>เวลา </label>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label>ชั่วโมง</label>
+                                        <select class="form-control" formControlName="collect_data_hour" >
+                                            <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <label>นาที</label>
+                                        <select class="form-control" formControlName="collect_data_min" >
+                                            <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-sm-12 col-md-5">
+                                <label>เจ้าหน้าที่ดูหน้างานเพื่อรวบรวมข้อมูล</label>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label>ชื่อเจ้าหน้าที่</label>
+                                        <input type="text" formControlName="personnel_collect_data" class="form-control" placeholder="ชื่อเจ้าหน้าที่">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4"> 
+                                <label>กำหนดวันลงงานจริง/เริ่มงาน </label>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <select class="form-control" formControlName="start_work_d" >
+                                            <option *ngFor="let item of dayList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-control" formControlName="start_work_m" >
+                                            <option *ngFor="let item of monthList" value="{{item.key}}">{{item.description}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-control" formControlName="start_work_y" >
+                                            <option *ngFor="let item of yearList" value="{{item}}">{{item}}</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 45%;" class="center">กำหนดเวลาผลัดกลางวัน</th>
+                                                <th style="width: 45%;" class="center">กำหนดเวลาผลัดกลางคืน</th>
+                                                <th style="width: 10%;"><button type="button" class="btn btn-rounded btn-success" (click)="addDaytimeShift()">เพิ่ม</button></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="left">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" formControlName="daytime_shift_start_hour_d" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" formControlName="daytime_shift_start_min_d" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <label style="margin-top: 36px;">ถึง</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" formControlName="daytime_shift_end_hour_d" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" formControlName="daytime_shift_end_min_d" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div> 
+                                                </td>
+                                                <td class="left">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" formControlName="daytime_shift_start_hour_n" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" formControlName="daytime_shift_start_min_n" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <label style="margin-top: 36px;">ถึง</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" formControlName="daytime_shift_end_hour_n" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" formControlName="daytime_shift_end_min_n" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div> 
+                                                </td>
+                                                <td class="left">
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let item of customerDaytimeShiftList; index as i">
+                                                <td class="left">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_start_hour_d" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_start_min_d" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <label style="margin-top: 36px;">ถึง</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_end_hour_d" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_end_min_d" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div> 
+                                                </td>
+                                                <td class="left">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_start_hour_n" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_start_min_n" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-1">
+                                                            <label style="margin-top: 36px;">ถึง</label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label>ชั่วโมง</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_end_hour_n" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of hourList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label>นาที</label>
+                                                            <select class="form-control" [(ngModel)]="item.daytime_shift_end_min_n" [ngModelOptions]="{standalone: true}" >
+                                                                <option *ngFor="let item of minList" value="{{item}}">{{item}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div> 
+                                                </td>
+                                                <td class="left">
+                                                    <button type="button" class="btn btn-rounded btn-danger" (click)="removeAddDaytimeShift(i)">ลบ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2 bg-tis-emp" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> วงเงิน</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;" class="center">ลำดับ</th>
+                                                <th style="width: 20%;">ตำแหน่ง</th>
+                                                <th style="width: 10%;">กะ</th>
+                                                <th style="width: 10%;">จำนวน (นาย)</th>
+                                                <th style="width: 10%;">ราคา (นาย)</th>
+                                                <th style="width: 10%;">จำนวนเงิน</th>
+                                                <th style="width: 10%;">ค่าแรง</th>
+                                                <th style="width: 10%;">ไม่คิดค่าบริการ</th>
+                                                <th style="width: 10%;" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-success" (click)="addCustomerCreditLimit()">เพิ่ม</button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of customerCreditLimitList; index as i">
+                                                <td style="width: 10%;" class="center">{{i+1}}</td>
+                                                <td style="width: 20%;" class="left">
+                                                    <select class="form-control" [ngClass]="{ 'is-invalid': submitted_add && !item.master_data_id }"
+                                                        [(ngModel)]="item.master_data_id" [ngModelOptions]="{standalone: true}" >
+                                                        <option value="">--- ตำแหน่ง ---</option>
+                                                        <option *ngFor="let item of creditLimitPositionList" value="{{item.id}}">{{item.data_value}}</option>
+                                                    </select>
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <select class="form-control" [(ngModel)]="item.moment" [ngModelOptions]="{standalone: true}" >
+                                                        <option value="D">กลางวัน</option>
+                                                        <option value="N">กลางคืน</option>
+                                                    </select>
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" placeholder="จำนวน (นาย)" 
+                                                    [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" placeholder="ราคา (นาย)" 
+                                                    [(ngModel)]="item.price_per_person" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" placeholder="จำนวนเงิน" [disabled]="true" 
+                                                    [(ngModel)]="item.quantity*item.price_per_person" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" placeholder="ค่าแรง" 
+                                                    [(ngModel)]="item.wage" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="center">
+                                                    <input type="checkbox"  
+                                                    [(ngModel)]="item.is_free" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-danger" (click)="removeCustomerCreditLimit(i)">ลบ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <label>ประกันภัย</label>
+                                <div class="input-group date">
+                                    <input type="number" class="form-control" formControlName="insurance" >
+                                    <span class="input-group-addon input-group-text" style="cursor: pointer;" (click)="toggleInsurance()" *ngIf="!isView">
+                                        <i *ngIf="!isInsurance" class="fa fa-times" style="color: orange;"></i>
+                                        <i *ngIf="isInsurance" class="fa fa-check" style="color: green;"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2 bg-tis-emp" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> สวัสดิการ</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <!-- <div class="card-header">รายการเอกสาร</div> -->
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;" class="center">ลำดับ</th>
+                                                <th style="width: 50%;">รายละเอียด</th>
+                                                <th style="width: 10%;">มูลค่า</th>
+                                                <th style="width: 20%;">หน่วย</th>
+                                                <th style="width: 10%;" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-success" (click)="addBenefit()">เพิ่ม</button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of customerBenefitList; index as i">
+                                                <td style="width: 10%;" class="center">{{i+1}}</td>
+                                                <td style="width: 50%;" class="left">
+                                                    <input type="text" class="form-control" placeholder="รายละเอียดสวัสดิกร" 
+                                                    [ngClass]="{ 'is-invalid': submitted_add && !item.name }" 
+                                                    [(ngModel)]="item.name" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" placeholder="มูลค่า" 
+                                                    [ngClass]="{ 'is-invalid': submitted_add && !item.wage }" 
+                                                    [(ngModel)]="item.wage" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 20%;" class="left">
+                                                    <input type="text" class="form-control" placeholder="หน่วย เช่น ปี,เดือน,สัปดาห์,วัน,ชั่วโมง" 
+                                                    [ngClass]="{ 'is-invalid': submitted_add && !item.unit_name }" 
+                                                    [(ngModel)]="item.unit_name" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-danger" (click)="removeBenefit(i)">ลบ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 bg-tis-emp">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> โครงการ</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="project_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 20%;">โครงการ</th>
+                                                <th style="width: 20%;">เอกสารโครงการ</th>
+                                                <th style="width: 50%;">หมายเหตุ</th>
+                                                <th style="width: 10%;">
+                                                     
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 20%;">
+                                                    <span *ngIf="project">{{project?.project_name}}</span>
+                                                    <span *ngIf="!project" style="color: red;font-size: 20px;">ยังไม่เลือกโครงการ</span>
+                                                </td>
+                                                <td style="width: 20%;">
+                                                    <div *ngIf="project">
+                                                        <div *ngIf="project?.url">
+                                                            <a href="{{project?.url}}" target="_blank">{{project?.name_origin}}</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <span *ngIf="project">
+                                                        <div [innerHtml]="project?.conditions" 
+                                                        style="white-space: pre-wrap;color:rgb(57, 57, 57);"></div>
+                                                    </span>
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    <button type="button" class="btn btn-rounded btn-success" (click)="getProject()">เลือกโครงการ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 bg-tis-emp" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> จ้างเสริมเพิ่มเติม</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50%;">รายละเอียด</th>
+                                                <th style="width: 10%;" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-success" (click)="addHireMore()">เพิ่ม</button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;" class="left">
+                                                    <textarea rows="5" class="form-control" placeholder="รายละเอียด" formControlName="hire_more"></textarea>
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView"></td>
+                                            </tr>
+                                            <tr *ngFor="let item of hireMoreList; index as i">
+                                                <td style="width: 50%;" class="left">
+                                                    <textarea rows="5" class="form-control" placeholder="รายละเอียด" [(ngModel)]="item.details" [ngModelOptions]="{standalone: true}"></textarea>
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-danger" (click)="removeHireMore(i)">ลบ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2 bg-tis-emp" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> จ้างเสริมประจำ</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50%;">รายละเอียด</th>
+                                                <th style="width: 10%;" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-success" (click)="addHireExtra()">เพิ่ม</button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 50%;" class="left">
+                                                    <textarea rows="5" class="form-control" placeholder="รายละเอียด" formControlName="hire_extra"></textarea>
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView"></td>
+                                            </tr>
+                                            <tr *ngFor="let item of hireExtraList; index as i">
+                                                <td style="width: 50%;" class="left">
+                                                    <textarea rows="5" class="form-control" placeholder="รายละเอียด" [(ngModel)]="item.details" [ngModelOptions]="{standalone: true}"></textarea>
+                                                </td>
+                                                <td style="width: 10%;" class="left" *ngIf="!isView">
+                                                    <button type="button" class="btn btn-rounded btn-danger" (click)="removeHireExtra(i)">ลบ</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> หมายเหตุ</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <textarea rows="5" class="form-control" placeholder="หมายเหตุ" formControlName="note"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2" *ngIf="isCustomerCompany">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> อุปกรณ์ที่ใช้</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <!-- <div class="card-header">รายการเอกสาร</div> -->
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%;" class="center">ลำดับ</th>
+                                                <th style="width: 40%;">อุปกรณ์</th>
+                                                <th style="width: 10%;">จำนวน</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of stockList; index as i">
+                                                <td style="width: 10%;" class="center">{{i+1}}</td>
+                                                <td style="width: 40%;" class="left">{{item.name}}</td>
+                                                <td style="width: 10%;" class="left">
+                                                    <input type="number" class="form-control" [(ngModel)]="item.quantity" [ngModelOptions]="{standalone: true}">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="border p-2 bg-tis-emp">
+                        <legend class="w-auto legend-header" style="text-align: left;color: #1ab196;font-weight: bold;"> เรื่องร้องเรียน</legend>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="table-responsive">
+                                    <table id="company_table" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 25%;">เรื่องร้องเรียน</th>
+                                                <th style="width: 5%;">ใบคาร์/ใบพาร์</th>
+                                                <th style="width: 20%;">ผู้รับผิดชอบ</th>
+                                                <th style="width: 10%;">วันที่รับเรื่อง</th>
+                                                <th style="width: 25%;">สรุปเรื่องร้องเรียน</th>
+                                                <th style="width: 10%;">วันที่ปิดเรื่อง</th>
+                                                <th style="width: 5%;">สถานะ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of complaintList; index as i">
+                                                <td style="width: 25%;">
+                                                    <textarea class="form-control" rows="5" [disabled]="true">{{item.record_story}}</textarea>
+                                                </td>
+                                                <td style="width: 5%;">
+                                                    <span *ngIf="item.complaint_type == '0'" >ใบคาร์</span>
+                                                    <span *ngIf="item.complaint_type == '1'" >ใบพาร์</span>
+                                                </td>
+                                                <td style="width: 20%;">
+                                                    <small style="color: gray;">
+                                                        <b>ผู้รับผิดชอบ&nbsp;:&nbsp;{{item.prefix}}{{item.first_name}} {{item.last_name}}</b>
+                                                    </small><br>
+                                                    <small style="color: gray;">
+                                                        <b>เบอร์ผู้รับผิดชอบ&nbsp;:&nbsp;{{item.mobile}}</b>
+                                                    </small>
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    {{item.created_at | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                                </td>
+                                                <td style="width: 25%;">
+                                                    <textarea class="form-control" rows="5" [disabled]="true">{{item.conclusion}}</textarea>
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    {{item.updated_at | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                                </td>
+                                                <td style="width: 5%;">
+                                                    <span style="color: orange;" *ngIf="item.status == '0'" >เปิดเรื่อง</span>
+                                                    <span style="color: green;" *ngIf="item.status == '1'" >ปิดเรื่อง</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <br/>
+                    <div class="row" *ngIf="isCustomerCompany && !isView">
+                          <div class="col-sm-12 col-md-12 text-center">
+                              <button type="button" class="btn btn-rounded btn-success" (click)="saveCustomer(addForm.value)">บันทึก</button>
+                              <button type="button" class="btn btn-rounded btn-dark" (click)="reload()">เริ่มใหม่</button>
+                          </div>
+                    </div>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+  </div>
+
+  <!--Project List modal-->
+  <div class="modal" id="modal-project-list" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel1">ข้อมูลโครงการ</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="project_list_table" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;" class="center">ลำดับ</th>
+                                <th style="width: 20%;">ชื่อโครงการ</th>
+                                <th style="width: 20%;">เอกสารโครงการ</th>
+                                <th style="width: 45%;">หมายเหตุ</th>
+                                <th style="width: 10%;" class="center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of projectList; index as i">
+                                <td style="width: 5%;" class="center">{{i+1}}</td>
+                                <td style="width: 20%;" class="left">
+                                    <span style="color:rgb(57, 57, 57)">
+                                        {{item?.project_name}}
+                                    </span>
+                                </td>
+                                <td style="width: 20%;" class="left">
+                                    <div *ngIf="item?.url">
+                                        <a href="{{item?.url}}" target="_blank">{{item?.name_origin}}</a>
+                                    </div>
+                                </td>
+                                <td style="width: 45%;" class="left">
+                                    <div [innerHtml]="item?.conditions" 
+                                    style="white-space: pre-wrap;color:rgb(57, 57, 57);"></div>
+                                </td> 
+                                <td style="width: 10%;" class="center">
+                                    <button type="button" class="btn btn-rounded btn-success" (click)="selectedProject(item)">เลือก</button>
+                                </td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+<!-- End Project List modal-->

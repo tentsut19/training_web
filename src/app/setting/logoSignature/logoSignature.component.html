@@ -1,0 +1,173 @@
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">โลโก้/ลายเซ็นต์</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">โลโก้/ลายเซ็นต์</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-7 align-self-center" style="text-align: right;">
+            <button type="button" class="btn btn-rounded btn-success"><i
+                class="fa fa-save"></i> บันทึก</button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            <h5>โลโก้/ตราบริษัท</h5>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="sign" class="control-label"> </label>
+                                        <input type="file" class="form-control" id="sign" (change)="onFileChanged($event,1)">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <img src="../assets/images/logo.png" width="100%"/>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            <h5>โลโก้/ตราบริษัท (งานสลิป)</h5>
+                        </div>
+                        <div class="col-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="sign" class="control-label"> </label>
+                                        <input type="file" class="form-control" id="sign" (change)="onFileChanged($event,1)">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <img src="{{imageLogoUrl}}" width="100%"/>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            <h5>ฝ่ายบุคคล</h5>
+                        </div>
+                        <div class="col-3">
+                            <!--<div class="d-flex no-block justify-content-end align-items-center">
+                                <button type="button" class="btn btn-rounded btn-success" data-toggle="modal" data-target="#modal-masterData-add"><i
+                                        class="fa fa-plus"></i> เพิ่มข้อมูลพื้นฐาน</button>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span>ลายเซ็นต์</span>
+                                    <div class="form-group">
+                                        <label for="sign" class="control-label"> </label>
+                                        <input type="file" class="form-control" id="sign" (change)="onFileChanged($event,0)">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <img src="{{imageSignHrUrl}}" width="80%"/>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            <h5>การเงิน/บัญชี</h5>
+                        </div>
+                        <div class="col-3">
+                            <!--<div class="d-flex no-block justify-content-end align-items-center">
+                                <button type="button" class="btn btn-rounded btn-success" data-toggle="modal" data-target="#modal-masterData-add"><i
+                                        class="fa fa-plus"></i> เพิ่มข้อมูลพื้นฐาน</button>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span>ลายเซ็นต์</span>
+                                    <div class="form-group">
+                                        <label for="sign" class="control-label"> </label>
+                                        <input type="file" class="form-control" id="sign" (change)="onFileChanged($event,2)">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <img src="{{imageSignFnUrl}}" width="60%"/>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</div> 
+ 

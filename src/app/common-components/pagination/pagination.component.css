@@ -1,0 +1,18 @@
+.mat-toolbar {
+  font-size: 12px;
+  color: rgba(0,0,0,.54);
+}
+button {
+  border: none !important;
+  background-color: transparent;
+}
+
+@media(max-width: 576px) {
+  .responsive-view {
+      margin-left: 10px !important;
+  }
+
+  .margin-for-mobile {
+      margin-top: 10px;
+  }
+}

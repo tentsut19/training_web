@@ -1,0 +1,180 @@
+<div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">เอกสาร</h4>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">เอกสาร</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex no-block justify-content-end align-items-center">
+                    <button class="btn btn-success" (click)="openModalUpload(fileInfoMap)">
+                        <i class="fa fa-upload" aria-hidden="true"></i>
+                        อัพโหลดเอกสาร
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container-fluid"> 
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-9">
+                                รายการเอกสาร
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="document_table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%;" class="center">ลำดับ</th>
+                                        <th style="width: 30%;">ชื่อไฟล์</th>
+                                        <th style="width: 10%;">สิทธิ์การเข้าถึงเอกสาร</th>
+                                        <th style="width: 10%;">ผู้อัพโหลดไฟล์</th>
+                                        <th style="width: 10%;">วันที่อัพโหลดไฟล์</th>
+                                        <th style="width: 10%;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of fileInfoMap | keyvalue: descOrder; index as i" [ngClass]="{ 'bg-init': item.value.index == 0 , 'bg-palegoldenrod': item.value.index % 2 == 0 }" >
+                                        <td style="width: 10%;" class="center">{{i+1}}</td>
+                                        <td style="width: 30%;" class="left">{{item.value.name_origin}}</td>
+                                        <td style="width: 10%;" class="left">
+                                            <span *ngIf="item.value.own_type == 'A'">ทุกคน</span>
+                                            <span *ngIf="item.value.own_type == 'D'">เฉพาะแผนก</span>
+                                            <span *ngIf="item.value.own_type == 'P'">เฉพาะตำแหน่ง</span>
+                                            <span *ngIf="item.value.own_type == 'E'">เฉพาะคนอัพโหลด</span><br/>
+                                            <small *ngIf="item.value.own_type == 'D' || item.value.own_type == 'P' || item.value.own_type == 'E' " style="color: gray;">
+												<b><span *ngIf="item.value.own_type == 'D'">แผนก : {{item.value.department_name}}</span>
+                                                    <span *ngIf="item.value.own_type == 'P'">ตำแหน่ง : {{item.value.position_name}}</span>
+                                                    <span *ngIf="item.value.own_type == 'E'">{{item.value.employee_name}}</span>
+                                                </b>
+											</small>
+                                        </td>
+                                        <td style="width: 10%;" class="left">{{item.value.employee_name}}</td>
+                                        <td style="width: 10%;" class="left">{{item.value.created_at | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                                        <td style="width: 10%;" class="center">
+                                            <a type="button" class="btn btn-rounded btn-info" title="โหลดเอกสาร" target="_blank"
+                                            href="{{ item.value.url }}">
+                                                <i class="fa fas fa-download"></i></a>
+                                            <button type="button" *ngIf="item.value.employee_id == tisToken.id" 
+                                            class="btn btn-rounded btn-danger" (click)="deleteFileProcess(item.value.id)">
+                                                <i class="fa fa-minus"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Start Modal Upload -->
+<div class="modal" id="modal-upload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-edit">
+                <h4 class="modal-title" id="exampleModalLabel1">อัพโหลดเอกสาร</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel-group col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <div class="input-group">
+                                  <div *ngFor="let progressInfo of progressInfos" class="col-sm-12 col-md-12" style="margin-bottom: 10px;">
+                                      <span>{{ progressInfo.fileName }}</span>
+                                      <div class="progress" style="height: 40%;">
+                                          <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                                              attr.aria-valuenow="{{ progressInfo.value }}"
+                                              aria-valuemin="0"
+                                              aria-valuemax="100"
+                                              [ngStyle]="{ width: progressInfo.value + '%' }">
+                                              {{ progressInfo.value }}%
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4">
+                                      <div class="form-group">
+                                          <label>ชื่อเอกสาร</label>
+                                          <input type="text" class="form-control" placeholder="ชื่อเอกสาร" [(ngModel)]="nameFile">
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4">
+                                      <div class="form-group">
+                                          <label>เลือกไฟล์เอกสาร</label>
+                                          <input type="file" class="form-control" multiple (change)="selectFiles($event)" />
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4">
+                                      <div class="form-group">
+                                          <label>สิทธิ์การเข้าถึงเอกสาร <span class="star-required">*</span></label>
+                                        <select class="form-control" [(ngModel)]="ownType" (change)="changeOwnType($event.target.value)" [ngClass]="{ 'is-invalid': valid_ownType }" 
+                                        (change)="selectOwnType($event.target.value)">
+                                            <option value="">--- เลือกสิทธิ์การเข้าถึงเอกสาร  ---</option>
+                                            <option value="A">ทุกคน</option>
+                                            <option value="D">เฉพาะแผนก</option>
+                                            <option value="P">เฉพาะตำแหน่ง</option>
+                                            <option value="E">เฉพาะคนอัพโหลด</option>
+                                        </select>
+                                        <div *ngIf="valid_ownType" class="text-danger">
+                                            <div>กรุณาเลือกสิทธิ์การเข้าถึงเอกสาร</div>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4" *ngIf="ownType == 'D' || ownType == 'P' ">
+                                        <label>บริษัท <span class="star-required">*</span></label>
+                                        <select class="form-control" [(ngModel)]="companyId" (change)="getDepartmentByCompanyId($event.target.value)" [ngClass]="{ 'is-invalid': valid_company }">
+                                            <option value="">กรุณาเลือก</option>
+                                            <option *ngFor="let item of companyList" value="{{item.id}}">{{item.name}}</option>
+                                        </select> 
+                                        <div *ngIf="valid_company" class="text-danger">
+                                            <div>กรุณาเลือกบริษัท</div>
+                                        </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4" *ngIf="ownType == 'D' || ownType == 'P' ">
+                                        <label>แผนกงาน <span class="star-required">*</span></label>
+                                        <select class="form-control" [(ngModel)]="departmentId" (change)="getPositionByDepartmentId($event.target.value)" [ngClass]="{ 'is-invalid': valid_department }">
+                                            <option value="">กรุณาเลือก</option>
+                                            <option *ngFor="let item of departmentList;" value="{{item.id}}">{{item.name}}</option>
+                                        </select>
+                                        <div *ngIf="valid_department" class="text-danger">
+                                            <div>กรุณาเลือกแผนกงาน</div>
+                                        </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-4" *ngIf="ownType == 'P' ">
+                                        <label>ตำแหน่ง <span class="star-required">*</span></label>
+                                        <select class="form-control" [(ngModel)]="positionId" (change)="changePosition($event.target.value)" [ngClass]="{ 'is-invalid': valid_position }">
+                                            <option value="">กรุณาเลือก</option>
+                                            <option *ngFor="let item of positionList;" value="{{item.id}}">{{item.name}}</option>
+                                        </select>
+                                        <div *ngIf="valid_position" class="text-danger">
+                                            <div>กรุณาเลือกตำแหน่ง</div>
+                                        </div>
+                                  </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-success" [disabled]="!selectedFiles" (click)="uploadFiles()">อัพโหลดเอกสาร</button>
+                <button type="button" class="btn btn-rounded btn-light" data-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Upload -->

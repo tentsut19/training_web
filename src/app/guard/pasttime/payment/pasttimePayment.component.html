@@ -1,0 +1,133 @@
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-5 align-self-center">
+            <h4 class="page-title">บันทึกจ่ายเงิน รปภ. (พาร์ทไทม์)</h4>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">บันทึกจ่ายเงิน รปภ. (พาร์ทไทม์)</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-7 align-self-center">
+             
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9">
+                            บันทึกจ่ายเงิน รปภ. (พาร์ทไทม์)
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex no-block justify-content-end align-items-center">
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="searchForm" id="pasttime-payment-search-form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group m-b-30">
+                                    <label for="stock-category">วันที่ทำงาน</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" name="daterangeInput" 
+                                        formControlName="pasttime_payment_date" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)">
+                                        <span class="input-group-addon input-group-text"><i class="icon-calender"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-5">
+                                <div class="form-group m-b-30">
+                                    <label for="customer_id">หน่วยงานลูกค้า</label>
+                                    <select class="form-control" formControlName="customer_id">
+                                        <option value="">--- เลือกทั้งหมด ---</option>
+                                        <option *ngFor="let item of customerList" value="{{item.id}}">({{item.code}}) {{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div> 
+                            <div class="col-sm-12 col-md-2">
+                                <div class="form-group m-b-30">
+                                    <button type="button" class="btn btn-rounded btn-info" style="margin-top: 10%;" (click)="search(searchForm.value)"><i class="fas fa-search"></i> ค้นหา</button>
+                                </div>
+                            </div> 
+                        </div>
+                    </form>
+                    <hr />  
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12" style="text-align: center;">
+            <span style="font-size: 20px;padding: 10px;">บันทึกจ่ายเงิน รปภ. (พาร์ทไทม์) ประจำวันที่ : {{startDateStr}}</span>
+        </div>
+    </div>
+    <br />
+    <div class="row" *ngFor="let item of checkPointList">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header card-header-cover-table">
+                    <div class="row">
+                        <div class="col-9" style="font-style: italic;">
+                            ({{item.code}})&nbsp;{{item.name}}
+                        </div>
+                        <div class="col-3">
+                            <div class="d-flex no-block justify-content-end align-items-center">
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                     <div class="row" style="border-bottom: 1px solid #dbdbdb;padding: 5px;" *ngFor="let employee of item.emp">
+                        <div class="col-3"></div>
+                        <div class="col-3">
+                            <span>
+                                {{employee.first_name}}&nbsp;{{employee.last_name}}
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <span *ngIf="employee.work_peroid_type == 'D'">
+                                <span class="badge badge-pill badge-success" style="font-size: 14px">รอบกลางวัน</span>
+                                <div class="form-check form-check-inline" style="padding-left: 30px;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" [checked]="employee.paid_status == 1"
+                                        (change)="paidStatusChange(employee.id,item.cus_id)"
+                                        id="customCheck{{employee.work_peroid_type}}{{employee.id}}">
+                                        <label class="custom-control-label" for="customCheck{{employee.work_peroid_type}}{{employee.id}}">จ่ายเงินแล้ว &nbsp;({{employee.wage}} บาท)</label>
+                                    </div>
+                                </div>
+                            </span>
+                            <span *ngIf="employee.work_peroid_type == 'N'">
+                                <span class="badge badge-pill badge-danger" style="font-size: 14px">รอบกลางคืน</span>
+                                <div class="form-check form-check-inline" style="padding-left: 30px;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" [checked]="employee.paid_status == 1"
+                                        (change)="paidStatusChange(employee.id,item.cus_id)"
+                                        id="customCheck{{employee.work_peroid_type}}{{employee.id}}">
+                                        <label class="custom-control-label" for="customCheck{{employee.work_peroid_type}}{{employee.id}}">จ่ายเงินแล้ว &nbsp;({{employee.wage}} บาท)</label>
+                                    </div>
+                                </div>
+                            </span>  
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-12" style="text-align: center;">
+           <button type="button" class="btn btn-rounded btn-success" style="margin-top: 0.5%;" (click)="updatePayment()"><i class="fa fa-save"></i> บันทึกจ่ายเงิน</button>
+        </div>
+    </div>
+</div>  
