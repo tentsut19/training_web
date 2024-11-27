@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from 'src/app/shared/service';
+import { AuthService } from '../service/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var jquery: any;
 declare var $: any;
 declare var Swal: any;
@@ -11,7 +12,8 @@ declare var Swal: any;
 export class LoginInitComponent implements OnInit {
 
   constructor(
-    private employeeService: EmployeeService
+    private authService: AuthService,
+    private spinner: NgxSpinnerService,
   ) {
    }
 
@@ -19,26 +21,30 @@ export class LoginInitComponent implements OnInit {
   } 
 
   authen(e){
+    this.spinner.show();
     e.preventDefault();
-      var username = e.target.elements[0].value;
+      var email = e.target.elements[0].value;
       var password = e.target.elements[1].value;
-      var outsider = e.target.elements[2].checked;
-      var employee = {'username':username, 'password':password, 'outsider': outsider};
-      console.log(employee);
-      this.employeeService.login(employee).subscribe(res => {
+      var param = {'email':email, 'password':password};
+      console.log(param);
+      this.authService.auth(param).subscribe(res=>{
+        console.log(res);
         if(res != null){
           console.log(res);
-          localStorage.setItem('tisToken', JSON.stringify(res.data));
-          var object = {value: "value", timestamp: new Date().getTime()}
-          localStorage.setItem("key", JSON.stringify(object));
+          localStorage.setItem('trainingData', JSON.stringify(res.data));
+          localStorage.setItem('customerName', res.data.prefix+res.data.first_name+" "+res.data.last_name);
           window.location.href = "/";
         }else{
-          localStorage.removeItem('tisToken');
+          localStorage.clear();
           window.location.href = "/";
         }
-      }, err => {
-        console.error(err);
-        this.failDialog("");
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 500);
+      }, error => {
+        this.spinner.hide();
+        console.log(error);
+        this.failDialog("Invalid Email or Password");
       });
   }
 

@@ -9,16 +9,16 @@ pipelines:
           - npm install --legacy-peer-deps
           - npm install -g @angular/cli
           - export NODE_OPTIONS=--openssl-legacy-provider; ng build --configuration=uat
-          - cd dist/tis
+          - cd dist/guard-walk
           - pipe: atlassian/aws-s3-deploy:0.2.4
             variables:
-                AWS_ACCESS_KEY_ID: 'AKIAINQBYGZ7XZUIYFWA'
-                AWS_SECRET_ACCESS_KEY: '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'
+                AWS_ACCESS_KEY_ID: 'AKIA6ODUZFEVQZKBZCIY'
+                AWS_SECRET_ACCESS_KEY: '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'
                 AWS_DEFAULT_REGION: 'ap-southeast-1'
-                S3_BUCKET: 'tis7.com'
+                S3_BUCKET: 'guard-walk.com'
                 LOCAL_PATH: '$(pwd)'
           - pipe: docker://rudijs/aws-cloudfront-create-invalidation:1.0.2
             variables:
-              AWS_ACCESS_KEY_ID: 'AKIAINQBYGZ7XZUIYFWA'
-              AWS_SECRET_ACCESS_KEY: '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'
-              DISTRIBUTION_ID: 'E2YF4C8KV71YG2'
+              AWS_ACCESS_KEY_ID: 'AKIA6ODUZFEVQZKBZCIY'
+              AWS_SECRET_ACCESS_KEY: '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'
+              DISTRIBUTION_ID: 'E2XOF02H1JB6Q9'

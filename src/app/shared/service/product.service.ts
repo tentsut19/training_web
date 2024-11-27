@@ -8,7 +8,7 @@ var jsonResponse: any;
 @Injectable({
   providedIn: 'root'
 })
-export class ProductCategoryService {
+export class ProductService {
 
   httpOptions = {
     headers:new HttpHeaders({
@@ -20,26 +20,26 @@ export class ProductCategoryService {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
     this.httpOptions.headers = headers;
-  }
+   }
  
-  get(): Observable<any> {
-    return this.http.get<any>(this.constant.API_DOMAIN + "/api/v1/product-category", this.httpOptions);
+   get(): Observable<any> {
+    return this.http.get<any>(this.constant.API_DOMAIN + "/api/v1/product", this.httpOptions);
   }
 
   getById(id): Observable<any> {
-    return this.http.get<any>(this.constant.API_DOMAIN + "/api/v1/product-category/"+id, this.httpOptions);
+    return this.http.get<any>(this.constant.API_DOMAIN + "/api/v1/product/"+id, this.httpOptions);
   }
 
   create(req): Observable<any> {
-    return this.http.post<any>(this.constant.API_DOMAIN + "/api/v1/product-category", JSON.stringify(req), this.httpOptions);
+    return this.http.post<any>(this.constant.API_DOMAIN + "/api/v1/product", JSON.stringify(req), this.httpOptions);
   }
 
   update(req,id): Observable<any> {
-    return this.http.put<any>(this.constant.API_DOMAIN + "/api/v1/product-category/"+id, JSON.stringify(req), this.httpOptions);
+    return this.http.put<any>(this.constant.API_DOMAIN + "/api/v1/product/"+id, JSON.stringify(req), this.httpOptions);
   }
 
   delete(id): Observable<any> {
-    return this.http.delete<any>(this.constant.API_DOMAIN + "/api/v1/product-category/"+id, this.httpOptions);
+    return this.http.delete<any>(this.constant.API_DOMAIN + "/api/v1/product/"+id, this.httpOptions);
   }
 
   // Error handling

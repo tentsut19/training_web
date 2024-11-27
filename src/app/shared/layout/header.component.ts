@@ -8,14 +8,14 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent {
 
-  tisToken = null;
+  customerName = '';
 
   ngOnInit() {
-    this.tisToken = JSON.parse(localStorage.getItem('tisToken'));
+    this.customerName = localStorage.getItem("customerName");
   }
 
   unAuthen(){
-    localStorage.removeItem("tisToken");
+    localStorage.clear();
     window.location.href = "/";
   }
 }

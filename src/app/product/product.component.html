@@ -1,0 +1,238 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "small" color = "#fff" type = "line-scale-party" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-5 align-self-center">
+                <h4 class="page-title">รายงานสินค้า/อุปกรณ์</h4>
+                <div class="d-flex align-items-center">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">สินค้า/อุปกรณ์</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">รายงานสินค้า/อุปกรณ์</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-7 align-self-center">
+                <div class="d-flex no-block justify-content-end align-items-center">
+                    <button type="button" class="btn btn-rounded btn-success" (click)="openModelCreate()"><i class="fa fa-plus"></i> สร้างสินค้า/อุปกรณ์</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-8">
+                                รายงานสินค้า/อุปกรณ์
+                            </div>
+                            <div class="col-4" style="text-align: right;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table">
+                            
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4"></div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control input-search" (keyup)="applyFilter($event.target.value)" placeholder="พิมพ์เพื่อค้นหาข้อมูล">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                </div>
+                            </div>
+                              
+                            <table mat-table [dataSource]="dataSource" matSort>
+        
+                                <ng-container matColumnDef="no">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-no"> #</th>
+                                  <td mat-cell *matCellDef="let element; let i = index" class="col-no"> {{ i + 1 }} </td>
+                                </ng-container>
+                              
+                                <ng-container matColumnDef="product_category_name">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-category-name"> ประเภทสินค้า/อุปกรณ์</th>
+                                  <td mat-cell *matCellDef="let element" class="col-category"> {{element?.product_category?.category_name}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="product_code">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-product-code"> รหัสสินค้า/อุปกรณ์</th>
+                                  <td mat-cell *matCellDef="let element" class="col-category"> {{element.product_code}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="product_name">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-product-name"> ชื่อสินค้า/อุปกรณ์</th>
+                                  <td mat-cell *matCellDef="let element" class="col-category"> {{element.product_name}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="product_quantity">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-product-quantity"> จำนวน</th>
+                                  <td mat-cell *matCellDef="let element" class="col-category"> {{element.product_quantity}} </td>
+                                </ng-container>
+        
+                                <ng-container matColumnDef="created_at">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-created"> วันที่สร้าง</th>
+                                  <td mat-cell *matCellDef="let element" class="col-created"> {{element.created_at | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="updated_at">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-updated"> วันที่แก้ไขล่าสุด</th>
+                                  <td mat-cell *matCellDef="let element" class="col-updated"> {{element.updated_at | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                                </ng-container>
+        
+                                <ng-container matColumnDef="id">
+                                  <th mat-header-cell *matHeaderCellDef mat-sort-header class="green-header col-action">  </th>
+                                  <td mat-cell *matCellDef="let element" class="col-action">
+                                    <i class="fas fa-edit btn-edit" (click)="openDialogEdit(element)"></i>&nbsp;&nbsp;
+                                    <i class="fas fa-trash-alt btn-remove" (click)="openDialogDelete(element?.id)" ></i>
+                                  </td>
+                                </ng-container>
+        
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                              
+                            <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+<!-- Add Modal -->
+<div class="modal fade text-left" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-add">
+                <h4 class="modal-title" id="myModalLabel17">สร้างสินค้า/อุปกรณ์</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form [formGroup]="addForm">
+            <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label for="product_category_id"><span class="star-required">*</span> ประเภทสินค้า/อุปกรณ์</label>
+                                <select class="form-control" formControlName="product_category_id" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.product_category_id.errors }">
+                                    <option value="">--- เลือกประเภทสินค้า/อุปกรณ์ ---</option>
+                                    <option *ngFor="let item of productCategoryList" value="{{item.id}}">{{item.category_name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="submitted_add && addForm.controls.product_category_id.errors" class="text-danger">
+                                    <div>เลือกประเภทสินค้า/อุปกรณ์</div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label for="product_code"> รหัสสินค้า/อุปกรณ์</label>
+                                <input type ="text" class="form-control" id="product_code" name="product_code" 
+                                formControlName="product_code" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.product_code.errors }">
+                                <div *ngIf="submitted_add && addForm.controls.product_code.errors" class="text-danger">
+                                    <div>กรุณากรอก รหัสสินค้า/อุปกรณ์</div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label for="product_name"><span class="star-required">*</span> ชื่อสินค้า/อุปกรณ์</label>
+                                <input type ="text" class="form-control" id="product_name" name="product_name" 
+                                formControlName="product_name" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.product_name.errors }">
+                                <div *ngIf="submitted_add && addForm.controls.product_name.errors" class="text-danger">
+                                    <div>กรุณากรอก ชื่อสินค้า/อุปกรณ์</div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label for="product_quantity"> จำนวน</label>
+                                <input type ="text" class="form-control" id="product_quantity" name="product_quantity" formControlName="product_quantity">
+                            </fieldset>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" (click)="craete()">ยืนยัน</button>
+                <button type="button" class="btn grey btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </form>
+        </div>
+    </div>
+  </div>
+  <!-- End Add Modal -->
+
+<!-- Edit Modal -->
+<div class="modal fade text-left" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-edit">
+                <h4 class="modal-title" id="myModalLabel17">สร้างจุดตรวจ</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form [formGroup]="editForm">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label for="product_category_id"><span class="star-required">*</span> ประเภทสินค้า/อุปกรณ์</label>
+                            <select class="form-control" formControlName="product_category_id" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.product_category_id.errors }">
+                                <option value="">--- เลือกประเภทสินค้า/อุปกรณ์ ---</option>
+                                <option *ngFor="let item of productCategoryList" value="{{item.id}}">{{item.category_name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted_edit && editForm.controls.product_category_id.errors" class="text-danger">
+                                <div>เลือกประเภทสินค้า/อุปกรณ์</div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label for="product_code"> รหัสสินค้า/อุปกรณ์</label>
+                            <input type ="text" class="form-control" id="product_code" name="product_code" 
+                            formControlName="product_code" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.product_code.errors }">
+                            <div *ngIf="submitted_edit && editForm.controls.product_code.errors" class="text-danger">
+                                <div>กรุณากรอก รหัสสินค้า/อุปกรณ์</div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label for="product_name"><span class="star-required">*</span> ชื่อสินค้า/อุปกรณ์</label>
+                            <input type ="text" class="form-control" id="product_name" name="product_name" 
+                            formControlName="product_name" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.product_name.errors }">
+                            <div *ngIf="submitted_edit && editForm.controls.product_name.errors" class="text-danger">
+                                <div>กรุณากรอก ชื่อสินค้า/อุปกรณ์</div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label for="product_quantity"> จำนวน</label>
+                            <input type ="text" class="form-control" id="product_quantity" name="product_quantity" formControlName="product_quantity">
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" (click)="update()">ยืนยัน</button>
+                <button type="button" class="btn grey btn-danger" data-dismiss="modal">ยกเลิก</button>
+            </div>
+        </form>
+        </div>
+    </div>
+  </div>
+  <!-- End Edit Modal -->

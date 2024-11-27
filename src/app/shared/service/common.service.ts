@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Constant } from '../constant';
+import { ApiResponse, DropDownModel, Dropdown } from '../model/model';
 
 var jsonResponse: any;
 @Injectable({
@@ -15,7 +16,7 @@ export class CommonService {
   }
 
   getDateTh(date){
-    console.log(date);
+    //console.log(date);
     let dateTh = new Date(date);
     var dd = dateTh.getDate();
     var mm = dateTh.getMonth() + 1; //January is 0!
@@ -103,8 +104,23 @@ export class CommonService {
     return convertDateTh;
   }
 
+  getDateTimeThYYYYMMDD2(date){
+    if(date == "" || date == null){
+      return "";
+    } 
+    // console.log(date);
+    let dateTimeSplit = date.split(" ");
+    let dateSplit = dateTimeSplit[0].split("-");
+    //console.log(dateSplit);
+    var yyyy = dateSplit[0]; 
+    let month = dateSplit[1];
+    let day = dateSplit[2];
+    var convertDateTh = day + " " + this.convertMonthTH(month) + " " + (Number(yyyy) + 543) + " " +dateTimeSplit[1].slice(0, 5);
+    return convertDateTh;
+  }
+
   convertDateToStrng(date){
-    console.log(date);
+    //console.log(date);
     let dateTh = new Date();
     if(date){
       dateTh = new Date(date);
@@ -420,20 +436,6 @@ export class CommonService {
     return yearList;
   }
 
-  generateBackWardYearList(){
-    let yearList = [];
-    let currentYear = new Date().getFullYear();
-    for(let i=0;i<5;i++){
-      let year = 
-      {
-        'enYear':currentYear-i,
-        'thYear':(currentYear-i) + 543
-      };
-      yearList.push(year);
-    }
-    return yearList;
-  }
-
   dataURLtoFile(dataurl, filename) {
     try {
       //console.log(dataurl);
@@ -452,6 +454,33 @@ export class CommonService {
       // document.getElementById("demo").innerHTML = err.message;
     }
     return new File([u8arr], filename, {type:mime});
+  }
+
+  public isResHasData = (res: ApiResponse<any>): boolean =>
+    res && res.code === '00' && res.data;
+
+   public isResHasData_V2 = (res: any): boolean =>
+    res && res.code === 'success' && res.data;
+
+
+  public mapDropDown(res: ApiResponse<DropDownModel[]>, keyName: string, valueName: string): Dropdown[] {
+    if (this.isResHasData(res)) {
+      return res.data.map((data) => ({
+        id: data[keyName],
+        desc: data[valueName],
+      }));
+    }
+    return [];
+  }
+
+  public mapDropDown_V2(datas, keyName: string, valueName: string): Dropdown[] {
+    if(datas){
+      return datas.map((data) => ({
+        id: data[keyName],
+        desc: data[valueName],
+      }));
+    }
+    return [];
   }
  
 }

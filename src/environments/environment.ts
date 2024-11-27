@@ -4,25 +4,8 @@
 
 export const environment = {
   production: false,
-
-
-    api_cabsat_report_endpoint: 'https://cabsat.easynet.co.th/api/v1',
-
-    // api_cabsat_report_endpoint: 'http://localhost:5000/api/v1',
-
-    // api_endpoint: 'http://localhost:8000/api/v1',
-    // api_domain: 'http://localhost:8000',
-    
-    api_report_endpoint: 'http://localhost:5000/api/v1',
-    // api_report_endpoint: 'https://report.checkguard-api.com/api/v1',
-
-     api_endpoint: 'https://tis7-api.com/api/v1',
-     api_domain: 'https://tis7-api.com',
-
-    web_url: 'http://localhost:4200/#',
-    //web_url: 'https://tis7.com/#'
-    
-    displayLog: true
+  api_report_domain: 'https://report.checkguard-api.com',
+  api_domain: 'http://localhost:8000',
 };
 
 /*

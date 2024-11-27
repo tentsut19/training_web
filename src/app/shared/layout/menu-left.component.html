@@ -1,272 +1,53 @@
 <style>
-    .bg-menu-expend{
+  .bg-menu-expend {
     background-color: #2e3442 !important;
-}
+  }
 </style>
 <aside class="left-sidebar">
-    <!-- Sidebar scroll-->
-    <div class="scroll-sidebar">
-        <!-- Sidebar navigation-->
-        <nav class="sidebar-nav">
-            <ul id="sidebarnav">
-                <!-- User Profile-->
-                <li>
-                    <!-- User Profile-->
-                    <div class="user-profile d-flex no-block dropdown mt-3">
-                        <div class="user-pic"><img src="../assets/images/users/1.jpg" alt="users" class="rounded-circle"
-                                width="40" /></div>
-                        <div class="user-content hide-menu ml-2">
-                            <!--<a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown"
+  <!-- Sidebar scroll-->
+  <div class="scroll-sidebar">
+    <!-- Sidebar navigation-->
+    <nav class="sidebar-nav">
+      <ul id="sidebarnav">
+        <!-- User Profile-->
+        <li>
+          <!-- User Profile-->
+          <div class="user-profile d-flex no-block dropdown mt-3">
+            <div class="user-pic"><img src="../assets/images/users/1.jpg" alt="users" class="rounded-circle"
+                width="40" /></div>
+            <div class="user-content hide-menu ml-2">
+              <!--<a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 <h5 class="mb-0 user-name font-medium">Steave Jobs <i class="fa fa-angle-down"></i></h5>
                                 <span class="op-5 user-email">varun@gmail.com</span>
                             </a>-->
-                            <a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <h5 class="mb-0 user-name font-medium">{{tisToken.code}}</h5>
-                                <h5 class="mb-0 user-name font-medium">{{tisToken.first_name}} {{tisToken.last_name}}</h5>
-                                <!-- <span class="op-5 user-email">{{tisToken.contacts[0]?.email}}</span> -->
-                            </a>
-                            <!--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="Userdd">
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user mr-1 ml-1"></i> My
-                                    Profile</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet mr-1 ml-1"></i>
-                                    My Balance</a>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email mr-1 ml-1"></i>
-                                    Inbox</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings mr-1 ml-1"></i>
-                                    Account
-                                    Setting</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i
-                                        class="fa fa-power-off mr-1 ml-1"></i>
-                                    Logout</a>
-                            </div>-->
-                        </div>
-                    </div>
-                    <!-- End User Profile-->
-                </li>
-                <div *ngIf="isAdmin3s">
-                    <!-- User Profile-->
-                    <li *ngIf="pagePermission[0] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="/" aria-expanded="false">
-                        <i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">ภาพรวมระบบ</span></a>
-                    </li>
-                    <li *ngIf="!pagePermission[1] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="#/employee/view/{{tisToken.id}}" aria-expanded="false">
-                        <i class="icon-user"></i><span class="hide-menu">ข้อมูลส่วนตัว</span></a>
-                    </li>
-                    <li *ngIf="pagePermission[9] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"><i class="icon-user"></i><span
-                            class="hide-menu">ข้อมูลพนักงาน
-                        </span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item"><a href="#employee" class="sidebar-link"><i
-                                            class="mdi mdi-adjust"></i><span class="hide-menu"> ประวัติพนักงาน </span></a></li>
-                            <li class="sidebar-item"><a href="#employee/leave" class="sidebar-link"><i
-                                            class="mdi mdi-adjust"></i><span class="hide-menu"> รายการสิทธิ์การลา </span></a></li>
-                        </ul>
-                    </li>
-                </div>
-                <div *ngIf="!isAdmin3s">
-                    <!-- User Profile-->
-                    <li *ngIf="pagePermission[0] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="/" aria-expanded="false">
-                            <i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">ภาพรวมระบบ</span></a>
-                    </li>
-                    <li *ngIf="!isOutsider" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="#timesheet/list" aria-expanded="false">
-                        <i class="far fa-calendar-check"></i><span class="hide-menu">ลงเวลาทำงาน</span></a>
-                    </li>
-                    <li *ngIf="(!pagePermission[1] || isSuperAdmin) && !isOutsider" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="#/employee/view/{{tisToken.id}}" aria-expanded="false">
-                        <i class="icon-user"></i><span class="hide-menu">ข้อมูลส่วนตัว</span></a>
-                    </li>
+              <a href="javascript:void(0)" class="" id="Userdd" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <h5 class="mb-0 user-name font-medium"></h5>
+                <h5 class="mb-0 user-name font-medium">{{customerName}}</h5>
+              </a>
+            </div>
+          </div>
+          <!-- End User Profile-->
+        </li>
+        <!-- User Profile-->
+        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/"
+            aria-expanded="false">
+            <i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">Dashboard</span></a>
+        </li>
+        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+            aria-expanded="false"><i class="ti-server"></i><span class="hide-menu">สินค้า/อุปกรณ์</span></a>
+          <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
 
-                    <li *ngIf="pagePermission[1] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
-                            aria-expanded="false"><i class="mdi mdi-settings"></i><span class="hide-menu">ตั้งค่าข้อมูลพื้นฐาน</span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-
-                            <li class="sidebar-item" *ngIf="pagePermission[2] || isSuperAdmin"><a href="#setting/company" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลบริษัท </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[3] || isSuperAdmin"><a href="#setting/department" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลแผนกงาน </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[4] || isSuperAdmin"><a href="#setting/position" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลตำแหน่งงาน </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[5] || isSuperAdmin"><a href="#setting/company" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ตั้งค่าสิทธิ์การใช้งานระบบ </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[6] || isSuperAdmin"><a href="#setting/master-data" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลพื้นฐาน </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[6] || isSuperAdmin"><a href="#setting/logo-signature" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> โลโก้/ลายเซ็นต์ </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[7] || isSuperAdmin"><a href="#setting/calendar/holiday" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ปฏิทินวันหยุดนักขัตฤกษ์ </span></a></li>
-                            <li class="sidebar-item" ><a href="#setting/inspection" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> หัวข้อที่ตรวจสอบ / ประเมิน </span></a></li>
-                            <li class="sidebar-item" ><a href="#setting/customer-audit" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ค่าแรง / โอที (Audit) </span></a></li>         
-                            <li class="sidebar-item" ><a href="#setting/rent-house" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลค่าบ้าน </span></a></li>   
-                            <li class="sidebar-item" ><a href="#setting/insurance" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ข้อมูลประกันความเสียหาย </span></a></li>
-                            <li class="sidebar-item" ><a href="#setting/contract-audit" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> รูปแบบสัญญา (Audit) </span></a></li>
-                            <li class="sidebar-item"><a href="#setting/advmoney" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> เบิกล่วงหน้า </span></a></li>
-                            <li class="sidebar-item"><a href="#setting/customer-seq" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ลำดับหน่วยงานจ่ายโอน </span></a></li>
-                            <li class="sidebar-item"><a href="#setting/set-up-leave" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ตั้งค่าวันลา </span></a></li>
-                            <li class="sidebar-item"><a href="#setting/timesheet-master-data" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
-                                        class="hide-menu"> ตั้งค่าลงเวลาทำงาน </span></a></li>                                      
-                        </ul>
-                    </li>
-
-                    <li *ngIf="!isOutsider" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="icon-folder"></i><span
-                                class="hide-menu">เอกสาร
-                            </span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item"><a href="#document" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> รายการเอกสาร </span></a></li>
-                        </ul>
-                    </li>
-
-                    <li *ngIf="pagePermission[8] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="icon-people"></i><span
-                                class="hide-menu">บุคคลภายนอก
-                            </span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item"><a href="#outsider" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ข้อมูลบุคคลภายนอก </span></a></li>
-                        </ul>
-                    </li>
-
-                    <li *ngIf="pagePermission[9] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="icon-user"></i><span
-                                class="hide-menu">ข้อมูลพนักงาน
-                            </span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item"><a href="#employee" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ประวัติพนักงาน </span></a></li>
-                            <li class="sidebar-item"><a href="#employee/work-history" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ตรวจสอบการทำงาน </span></a></li>
-                            <li class="sidebar-item"><a href="#employee/leave" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> รายการสิทธิ์การลา </span></a></li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-item" *ngIf="!isHr && !isOutsider"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="#employee/leave" aria-expanded="false">
-                        <i class="far fa-calendar"></i><span class="hide-menu">รายการสิทธิ์การลา</span></a>
-                    </li>
-
-                    <li *ngIf="pagePermission[10] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="ti-package"></i><span
-                                class="hide-menu">ระบบคลังสินค้า/บริการ</span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item" *ngIf="pagePermission[11] || isSuperAdmin"><a href="#stock" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ข้อมูลคลังสินค้า </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[12] || isSuperAdmin"><a href="#stock/category" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> หมวดหมู่สินค้า </span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[13] || isSuperAdmin"><a href="#stock/pick-stock" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ข้อมูลรายการเบิก </span></a></li>
-                        </ul>
-                    </li>
-
-                    <li *ngIf="pagePermission[14] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="icon-people"></i><span
-                                class="hide-menu">ระบบลูกค้าสัมพันธ์</span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item"><a href="#customer" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ข้อมูลลูกค้า </span></a></li>
-                            <li class="sidebar-item"><a href="#customer-report-line-oa" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ลูกค้าแจ้งเรื่องจาก Line OA </span></a></li>
-                            <li class="sidebar-item"><a href="#complaint" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> เรื่องร้องเรียน </span></a></li>
-                            <li class="sidebar-item"><a href="#setting/project" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ตั้งค่าโครงการ </span></a></li>
-                            <li class="sidebar-item"><a href="#customer/project" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> สิทธิประโยชน์โครงการ </span></a></li>
-                        </ul>
-                    </li>
-
-                    <li *ngIf="pagePermission[15] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="fas fa-tasks"></i><span
-                                class="hide-menu">ระบบจัดการข้อมูลงาน</span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <!--<li class="sidebar-item" *ngIf="pagePermission[16]"><a href="#guard/permanent/shcedule" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ลงเวลาทำงาน (รปภ.)</span></a></li>-->
-                            <li class="sidebar-item" *ngIf="pagePermission[16] || isSuperAdmin"><a href="#guard/permanent/checkPoint" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ลงเวลาทำงาน (รปภ.)</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[16] || isSuperAdmin"><a href="#guard/permanent/pre-checkPoint" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> (รปภ.) เข้า-ออก งาน</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[16] || isSuperAdmin"><a href="#guard/permanent/summary-pre-checkPoint" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> สรุป (รปภ.) เข้า-ออก งาน</span></a></li>            
-                            <!--<li class="sidebar-item" *ngIf="pagePermission[17]"><a href="#guard/pasttime/checkpoint" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> ลงเวลาทำงาน รปภ. (พาร์ทไทม์)</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[18]"><a href="#guard/pasttime/payment" class="sidebar-link"><i
-                                        class="mdi mdi-adjust"></i><span class="hide-menu"> บันทึกจ่ายเงิน รปภ. (พาร์ทไทม์)</span></a></li>-->
-
-                            <li class="sidebar-item" *ngIf="pagePermission[16] || isSuperAdmin"><a href="#guard/permanent/shcedule"
-                                    class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> ตารางงาน (รปภ.)</span></a></li>
-                            
-                            <li class="sidebar-item" *ngIf="pagePermission[16] || isSuperAdmin"><a href="#guard/notwork"
-                                    class="sidebar-link"><i class="mdi mdi-adjust"></i><span class="hide-menu"> รายชื่อรอแจ้งออก (รปภ.)</span></a></li>
-                        </ul>
-                    </li>
-                    <li *ngIf="pagePermission[19] || isSuperAdmin" class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i class="ti-server"></i><span
-                                class="hide-menu">ระบบรายงาน</span></a>
-                        <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                            <li class="sidebar-item" *ngIf="pagePermission[20] || isSuperAdmin"><a href="#report/comparison" class="sidebar-link"><i
-                                class="mdi mdi-adjust"></i><span class="hide-menu"> ใบยาว/สลิป</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[20] || isSuperAdmin"><a href="#report/comparisonAdv" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> ใบยาว/สลิป (Advance)</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[20] || isSuperAdmin"><a href="#report/comparisonAudit" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> สลิป (Audit)</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[20] || isSuperAdmin"><a href="#report/comparisonRecheck" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> ตรวจสอบเช็คจุด (รายบุคคล)</span></a></li>
-                            <!--<li class="sidebar-item" *ngIf="pagePermission[20]"><a href="#report/guard/pasttime/checkpoint" class="sidebar-link"><i
-                                class="mdi mdi-adjust"></i><span class="hide-menu"> ผลปฏิบัติงาน รปภ. (พาร์ทไทม์)</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[21]"><a href="#report/slip" class="sidebar-link"><i
-                                class="mdi mdi-adjust"></i><span class="hide-menu"> สลิปเงินเดือน รปภ.</span></a></li>-->
-                            <li class="sidebar-item" *ngIf="pagePermission[22] || isSuperAdmin"><a href="#check-transfer-pay" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> ตรวจสอบโอนจ่าย</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[22] || isSuperAdmin"><a href="#report/adv-transfer-pay" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> โอนจ่ายเงินเบิก</span></a></li>
-                            <li class="sidebar-item" *ngIf="pagePermission[22] || isSuperAdmin"><a href="#report/money-summary" class="sidebar-link"><i
-                                    class="mdi mdi-adjust"></i><span class="hide-menu"> สรุปข้อมูลการจ่ายเงิน</span></a></li>
-                        </ul>
-                    </li>
-
-                    <!--<li *ngIf="pagePermission[22]" class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="#check-transfer-pay" aria-expanded="false">
-                        <i class="mdi mdi-checkbox-multiple-marked"></i><span class="hide-menu">ตรวจสอบโอนจ่าย</span></a>
-                    </li>-->
-
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#share" aria-expanded="false">
-                        <i class="mdi mdi-chart-areaspline"></i><span class="hide-menu">รายการหุ้นลอย</span></a>
-                    </li>
-                </div>
-
-                <!--<li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-content-copy"></i><span
-                            class="hide-menu">ระบบรายงาน</span></a>
-                    <ul aria-expanded="false" class="collapse  first-level bg-menu-expend">
-                        <li class="sidebar-item"> <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
-                            <i class="mdi mdi-playlist-plus"></i> <span class="hide-menu">รายงานคลังสินค้า</span></a>
-                            <ul aria-expanded="false" class="collapse second-level">
-                                <li class="sidebar-item"><a href="#report/stockreport/productimport" class="sidebar-link"><i class="mdi mdi-octagram"></i><span class="hide-menu">รายการสินค้านำเข้า</span></a></li>
-                            </ul>        
-                        </li>
-                    </ul>
-                </li>-->
-
-            </ul>
-        </nav>
-        <!-- End Sidebar navigation -->
-    </div>
-    <!-- End Sidebar scroll-->
+            <li class="sidebar-item"><a href="#product-category" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
+                  class="hide-menu"> รายงานประเภทสินค้า/อุปกรณ์ </span></a></li>
+            <li class="sidebar-item"><a href="#product" class="sidebar-link"><i class="mdi mdi-adjust"></i><span
+                  class="hide-menu"> รายงานสินค้า/อุปกรณ์ </span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <!-- End Sidebar navigation -->
+  </div>
+  <!-- End Sidebar scroll-->
 </aside>
