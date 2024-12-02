@@ -15,7 +15,7 @@ pipelines:
                 AWS_ACCESS_KEY_ID: 'AKIA6ODUZFEVQZKBZCIY'
                 AWS_SECRET_ACCESS_KEY: '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'
                 AWS_DEFAULT_REGION: 'ap-southeast-1'
-                S3_BUCKET: 'guard-walk.com'
+                S3_BUCKET: 'training.web'
                 LOCAL_PATH: '$(pwd)'
           - pipe: docker://rudijs/aws-cloudfront-create-invalidation:1.0.2
             variables:
