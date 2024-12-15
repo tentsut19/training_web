@@ -26,7 +26,7 @@ const routes: Routes = [
     component: MyPageComponent,
     canActivate: [AuthGuard],
   },
-]; 
+];  
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
