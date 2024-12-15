@@ -25,7 +25,7 @@ const routes: Routes = [
     path: "my-page",
     component: MyPageComponent,
     canActivate: [AuthGuard],
-  },
+  },   
 ];  
 
 @NgModule({
