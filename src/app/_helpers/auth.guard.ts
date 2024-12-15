@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
     ) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        console.log('=== canActivate ===');
+        //console.log('=== canActivate ===');
         var trainingData = localStorage.getItem("trainingData");
         if(!trainingData){
             localStorage.clear();

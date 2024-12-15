@@ -4,6 +4,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ProductCategoryComponent } from "./product-category/product-category.component";
 import { ProductComponent } from "./product/product.component";
 import { AuthGuard } from "./_helpers/auth.guard";
+import { MyPageComponent } from "./my-page/my-page.component";
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: "product",
     component: ProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "my-page",
+    component: MyPageComponent,
     canActivate: [AuthGuard],
   },
 ];
