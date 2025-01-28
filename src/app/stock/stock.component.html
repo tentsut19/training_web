@@ -1,0 +1,157 @@
+<div class="page-breadcrumb">
+  <div class="row">
+    <div class="col-5 align-self-center">
+      <h4 class="page-title">Dashboard</h4>
+      <div class="d-flex align-items-center">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Stock</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="col-7 align-self-center">
+      <div class="d-flex no-block justify-content-end align-items-center">
+          <button type="button" class="btn btn-rounded btn-success" (click)="openModelCreate()"><i class="fa fa-plus"></i> สร้างสต็อคสินค้า</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header card-header-cover-table">
+                        <div class="row">
+                            <div class="col-8">
+                                รายการสต็อคสินค้า
+                            </div>
+                            <div class="col-4" style="text-align: right;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table">
+                          <table id="stock_table" class="table table-striped table-bordered">
+                            <thead>
+                               <tr>
+                                <th>อันดับ</th>
+                                <th>CODE</th>
+                                <th>NAME</th>
+                                <th>#</th>
+                               </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of stockList; index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{item?.stock_code}}</td>
+                                <td>{{item?.stock_name}}</td>
+                                <td>
+                                  <i class="fas fa-edit btn-edit" (click)="edit(item)"></i>&nbsp;&nbsp;
+                                  <i class="fas fa-trash-alt btn-remove" (click)="openModalDelete(item)"></i>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+    <!-- Add Modal -->
+<div class="modal fade text-left" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header modal-header-add">
+              <h4 class="modal-title" id="myModalLabel17">สร้างสต็อคสินค้า</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form [formGroup]="addForm">
+          <div class="modal-body">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <fieldset class="form-group">
+                              <label for="stock_name"><span class="star-required">*</span> name</label>
+                              <input type ="text" class="form-control" id="stock_name" name="stock_name" 
+                              formControlName="stock_name" [ngClass]="{ 'is-invalid': submitted_add && addForm.controls.stock_name.errors }">
+                              <div *ngIf="submitted_add && addForm.controls.stock_name.errors" class="text-danger">
+                                  <div>กรุณากรอก ชื่อสต็อค</div>
+                              </div>
+                          </fieldset>
+                      </div>
+                  </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-success" (click)="save()">ยืนยัน</button>
+              <button type="button" class="btn grey btn-danger" data-dismiss="modal">ยกเลิก</button>
+          </div>
+      </form>
+      </div>
+  </div>
+</div>
+<!-- End Add Modal -->
+
+
+ <!-- Edit Modal -->
+ <div class="modal fade text-left" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel17" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header modal-header-edit">
+              <h4 class="modal-title" id="myModalLabel17">แก้ไขสต็อคสินค้า</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form [formGroup]="editForm">
+          <div class="modal-body">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <fieldset class="form-group">
+                              <label for="stock_name"><span class="star-required">*</span> name</label>
+                              <input type ="text" class="form-control" id="stock_name" name="stock_name" 
+                              formControlName="stock_name" [ngClass]="{ 'is-invalid': submitted_edit && editForm.controls.stock_name.errors }">
+                              <div *ngIf="submitted_edit && editForm.controls.stock_name.errors" class="text-danger">
+                                  <div>กรุณากรอก ชื่อสต็อค</div>
+                              </div>
+                              <input type="hidden" formControlName="id" id="id" name="id"/>
+                          </fieldset>
+                      </div>
+                  </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-success" (click)="update()">ยืนยัน</button>
+              <button type="button" class="btn grey btn-danger" data-dismiss="modal">ยกเลิก</button>
+          </div>
+      </form>
+      </div>
+  </div>
+</div>
+<!-- End Edit Modal -->
+
+<!-- Start Modal Delete -->
+<div class="modal" id="modal-remove" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-body center remove-modal-bg-content">
+              <i class="fa fa-exclamation-circle warnnig-remove-icon" aria-hidden="true"></i><br />
+              <span class="warnnig-remove-text">
+                  คุณต้องการลบข้อมูลรายการนี้
+              </span>
+          </div>
+          <div class="modal-footer center">
+                  <button type="button" class="btn btn-danger" (click)="deleteProcess()">ยืนยัน</button>&nbsp;
+                  <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End Modal Delete -->

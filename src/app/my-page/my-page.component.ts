@@ -12,6 +12,8 @@ export class MyPageComponent implements OnInit {
   @Input() data!: string;
 
   num: number;
+  name: string = 'Pisit Ngamkarn';
+  result: number = 0.00;
 
   constructor() { }
 
@@ -21,11 +23,22 @@ export class MyPageComponent implements OnInit {
 
   ngOnInit() {
     console.log('ngOnInit called!');
+    this.getData();
+
+    this.result = this.calculate(500);
+    console.log(this.result);
   }
 
   ngOnDestroy() {
     console.log('ngOnDestroy called!');
   }
   
+  getData(): void {
+    console.log('getData');
+  }
+
+  calculate(param: number) : number {
+    return param / 100;
+  }
 
 }

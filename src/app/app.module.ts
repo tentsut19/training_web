@@ -17,6 +17,8 @@ import { ProductCategoryModule } from "./product-category/product-category.modul
 import { ProductModule } from "./product/product.module";
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { MyPageModule } from "./my-page/my-page.module";
+import { CustomerListModule } from "./customer-list/customer-list.module";
+import { StockModule } from "./stock/stock.module";
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { MyPageModule } from "./my-page/my-page.module";
     ProductCategoryModule,
     ProductModule,
     SurveyRoundModule,
-    MyPageModule
+    MyPageModule,
+    CustomerListModule,
+    StockModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },

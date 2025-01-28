@@ -17,5 +17,10 @@
   </div>
 </div>
 <div class="container-fluid">
-  hello my page
+    <input type="number" [(ngModel)]="num" /> <br />
+    Result : {{num*100}} <br />
+    {{name}}<br />
+    <button class="btn btn-primary" (click)="getData()">click</button><br />
+
+    {{result}}
 </div>

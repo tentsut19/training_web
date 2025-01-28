@@ -5,6 +5,8 @@ import { ProductCategoryComponent } from "./product-category/product-category.co
 import { ProductComponent } from "./product/product.component";
 import { AuthGuard } from "./_helpers/auth.guard";
 import { MyPageComponent } from "./my-page/my-page.component";
+import { CustomerListComponent } from "./customer-list/customer-list.component";
+import { StockComponent } from "./stock/stock.component";
 
 const routes: Routes = [
   {
@@ -24,6 +26,16 @@ const routes: Routes = [
   {
     path: "my-page",
     component: MyPageComponent,
+    canActivate: [AuthGuard],
+  },   
+  {
+    path: "customer-list",
+    component: CustomerListComponent,
+    canActivate: [AuthGuard],
+  },   
+  {
+    path: "stock",
+    component: StockComponent,
     canActivate: [AuthGuard],
   },   
 ];  
