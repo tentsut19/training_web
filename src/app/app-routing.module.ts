@@ -7,6 +7,7 @@ import { AuthGuard } from "./_helpers/auth.guard";
 import { MyPageComponent } from "./my-page/my-page.component";
 import { CustomerListComponent } from "./customer-list/customer-list.component";
 import { StockComponent } from "./stock/stock.component";
+import { EquipmentComponent } from "./equipment/equipment.component";
 
 const routes: Routes = [
   {
@@ -38,6 +39,13 @@ const routes: Routes = [
     component: StockComponent,
     canActivate: [AuthGuard],
   },   
+  {
+    path: "equipment",
+    component: EquipmentComponent,
+    canActivate: [AuthGuard],
+  },
+
+
 ];  
 
 @NgModule({

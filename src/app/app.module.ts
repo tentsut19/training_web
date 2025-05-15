@@ -19,6 +19,7 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { MyPageModule } from "./my-page/my-page.module";
 import { CustomerListModule } from "./customer-list/customer-list.module";
 import { StockModule } from "./stock/stock.module";
+import { EquipmentModule } from "./equipment/equipment.module";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { StockModule } from "./stock/stock.module";
     SurveyRoundModule,
     MyPageModule,
     CustomerListModule,
-    StockModule
+    StockModule,
+    EquipmentModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },

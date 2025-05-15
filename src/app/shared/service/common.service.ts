@@ -119,6 +119,20 @@ export class CommonService {
     return convertDateTh;
   }
 
+  convertStringDateTimeToDate(originalStringDate){
+    // const originalStringDate = "2025-05-03 00:55:18";
+    const date = new Date(originalStringDate);
+    
+    // แปลงเป็น yyyy-mm-dd ด้วยการจัดรูปแบบเอง
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    
+    const formattedDate = `${yyyy}-${mm}-${dd}`;
+    console.log(formattedDate); // "2025-05-03"
+    return formattedDate;
+  }
+
   convertDateToStrng(date){
     //console.log(date);
     let dateTh = new Date();
